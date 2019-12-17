@@ -78,7 +78,6 @@ public class GameController : MonoBehaviour
             break;
 
             case GameStates.Ingame:
-                Debug.Log("INGAME");
                 handlePlayState();
             break;
         }
@@ -89,17 +88,14 @@ public class GameController : MonoBehaviour
     void handlePlayState() {
         switch(_playState) {
             case PlayStates.Initializing:
-                Debug.Log("INITIALIZING");
                 initialize();
             break;
 
             case PlayStates.Entering:
-                Debug.Log("ENTERING");
                 enter();
             break;
 
             case PlayStates.Exploring:
-                Debug.Log("EXPLORING");
                 getExploringInput();
             break;
 
