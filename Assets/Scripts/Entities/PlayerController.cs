@@ -2,39 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : CharacterBaseController
+[RequireComponent(typeof(CharacterMover))]
+public class PlayerController : MonoBehaviour
 {
     //UNITY LINKS
 
 
     //MEMBERS (PRIVATE)
-    
+    CharacterMover _mover = null;
+
 
     //ACCESSORS - MUTATORS (PUBLIC)
+    public CharacterMover movementData {
+        get { return _mover ;}
+    }
 
 
     //UNITY LIFECYCLE
-    protected override void Awake() {
-        base.Awake();
+    void Awake() {
+        _mover = GetComponent<CharacterMover>();
     }
 
-    protected override void Start() {
-        base.Start();
+    void Start() {
     }
 
-    protected override void Update() {
-        base.Update();
+    void Update() {
         getInput();
     }
 
-    protected override void FixedUpdate() {
-        base.FixedUpdate();
+    void FixedUpdate() {
     }
 
 
     //PRIVATE METHODS
     void getInput() {  
-        if(_isMoving) return;
+        if(_mover.IsMoving) return;
         if(GameController.instance.playState != PlayStates.Exploring) return;
         if(GameController.instance.exploreState != ExploreStates.PlayerMoving) return;
 
@@ -42,10 +44,13 @@ public class PlayerController : CharacterBaseController
         var yAxis = Input.GetAxisRaw("Vertical");
 
         if(xAxis != 0 || yAxis != 0) {
-            setDestination(new Vector3(xAxis, 0, yAxis));
+            _mover.setDestination(new Vector3(xAxis, 0, yAxis));
         }
     }
 
 
     //PUBLIC METHODS
+    public void setNewRound() {
+        _mover.setNewRound();
+    }
 }

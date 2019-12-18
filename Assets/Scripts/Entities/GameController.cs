@@ -170,7 +170,8 @@ public class GameController : MonoBehaviour
     void explore() {
         switch(_exploreState) {
             case ExploreStates.PlayerMoving:
-                if(_activePlayer.HasMadeAMoveThisTurn && !_activePlayer.IsMoving) {
+                var playerMover = _activePlayer.movementData;
+                if(playerMover.HasMadeAMoveThisTurn && !playerMover.IsMoving) {
                     //Check for combat here
                     
                     _activeEnemies.ForEach(e => setEnemyExploreAction(e));
@@ -180,7 +181,7 @@ public class GameController : MonoBehaviour
             break;
 
             case ExploreStates.EnemyMoving:
-                if(_activeEnemies.All(e => e.HasMadeAMoveThisTurn) && _activeEnemies.All(e => !e.IsMoving)) {
+                if(_activeEnemies.All(e => e.movementData.HasMadeAMoveThisTurn) && _activeEnemies.All(e => !e.movementData.IsMoving)) {
                     //Check for combat here
 
                     setNewRound();
@@ -196,7 +197,7 @@ public class GameController : MonoBehaviour
     }
 
     void setEnemyExploreAction(EnemyController e) {
-        e.setDestination(Vector3.right);
+        e.movementData.setDestination(Vector3.right);
     }
 
 

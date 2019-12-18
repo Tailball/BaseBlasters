@@ -140,7 +140,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8886250573180719864}
   - component: {fileID: 4534833678553272594}
-  - component: {fileID: 1977894241399177208}
+  - component: {fileID: 8954666025371435114}
+  - component: {fileID: 5888648075139389541}
   m_Layer: 0
   m_Name: Player-Solo
   m_TagString: Untagged
@@ -182,7 +183,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1977894241399177208
+--- !u!114 &8954666025371435114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343606095302539543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c085eafc0714a3f83b898e3011d7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementSpeed: 5
+--- !u!114 &5888648075139389541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,4 +208,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7464f40277c4ceebe4019654a13af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 5

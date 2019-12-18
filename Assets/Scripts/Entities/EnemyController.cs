@@ -2,31 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : CharacterBaseController
+[RequireComponent(typeof(CharacterMover))]
+public class EnemyController : MonoBehaviour
 {
     //UNITY LINKS
 
     
     //MEMBERS (PRIVATE)
+    Animator _anim = null;
+    CharacterMover _mover = null;
     float _timeToIdle = 10f;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
+    public CharacterMover movementData {
+        get { return _mover; }
+    }
 
 
     //UNITY LIFECYCLE
-    protected override void Awake() {
-        base.Awake();
-    }
+   void Awake() {
+       _anim = GetComponentInChildren<Animator>();
+       _mover = GetComponent<CharacterMover>();
+   }
 
-    protected override void Start() {
-        base.Start();
-    }
+   void Start() {
+   }
 
-    protected override void Update() {
-        base.Update();
-
-        if(!_isMoving) {
+   void Update() {
+        if(!_mover.IsMoving) {
             _timeToIdle -= Time.deltaTime * Random.Range(.1f, 7.5f);
             if(_timeToIdle <= 0) {
                 _anim.SetTrigger("Idle");
@@ -35,13 +39,15 @@ public class EnemyController : CharacterBaseController
         }
     }
 
-    protected override void FixedUpdate() {
-        base.FixedUpdate();
-    }
+   void FixedUpdate() {
+   }
 
 
     //PRIVATE METHODS
 
 
     //PUBLIC METHODS
+    public void setNewRound() {
+        _mover.setNewRound();
+    }
 }

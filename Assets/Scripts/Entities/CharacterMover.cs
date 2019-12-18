@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CharacterBaseController : MonoBehaviour
+public class CharacterMover : MonoBehaviour
 {
     //UNITY LINKS
     [Header("Tweaking")]
-    [SerializeField] protected float MovementSpeed = 1f;
+    [SerializeField] float MovementSpeed = 1f;
 
 
     //MEMBERS (PRIVATE)
-    protected Rigidbody _rb = null;
-    protected Animator _anim = null;
+    Rigidbody _rb = null;
+    Animator _anim = null;
     
-    protected Vector3 _destination;
-    protected float _rotDestinationY;
-    protected bool _madeAMoveThisTurn;
-    protected bool _isMoving;
+    Vector3 _destination;
+    float _rotDestinationY;
+    bool _madeAMoveThisTurn;
+    bool _isMoving;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -35,28 +35,28 @@ public class CharacterBaseController : MonoBehaviour
 
 
     //UNITY LIFECYCLE
-    protected virtual void Awake() {
+    void Awake() {
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
     }
 
-    protected virtual void Start() {
+    void Start() {
         _destination = transform.position;
         _madeAMoveThisTurn = false;
         _isMoving = false;
     }
 
-    protected virtual void Update() {
+    void Update() {
     }
 
-    protected virtual void FixedUpdate() {
+    void FixedUpdate() {
         move();
         rotate();
     }
 
 
     //PRIVATE METHODS
-    protected void move() {
+    void move() {
         if(!_isMoving) return;
 
         var intermediatePosition = Vector3.MoveTowards(transform.position, _destination, Time.fixedDeltaTime * this.MovementSpeed);
@@ -70,7 +70,7 @@ public class CharacterBaseController : MonoBehaviour
         }
     }
 
-    protected void rotate() {
+    void rotate() {
         if(!_isMoving) return;
 
         _rb.MoveRotation(Quaternion.Euler(0, _rotDestinationY, 0));
