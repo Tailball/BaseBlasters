@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
 
 public class GameController : MonoBehaviour
 {
@@ -11,8 +14,10 @@ public class GameController : MonoBehaviour
 
     //UNITY LINKS
     [Header("Linking")]
+    [SerializeField] GameObject MainUi = null;
     [SerializeField] Camera CameraOrthographic = null;
     [SerializeField] Camera CameraPerspective = null;
+    [SerializeField] TMP_Text txtRoundNum = null;
 
     [Header("Pools")]
     [SerializeField] GameObject SelectedPlayer = null; //This should change to character select that will pass on the selected playercontroller;
@@ -30,6 +35,8 @@ public class GameController : MonoBehaviour
     
     PlayerController _activePlayer;
     List<EnemyController> _activeEnemies = new List<EnemyController>();
+
+    int _round = 0;
     
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -63,6 +70,8 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
+        MainUi.SetActive(false);
+
         this._gameState = GameStates.Ingame; 
         this._playState = PlayStates.Initializing;
         this._combatState = 0;
@@ -151,6 +160,7 @@ public class GameController : MonoBehaviour
             _playState = PlayStates.Exploring;
             
             setNewRound();
+            MainUi.SetActive(true);
         }
     }
 
@@ -172,8 +182,7 @@ public class GameController : MonoBehaviour
             case ExploreStates.PlayerMoving:
                 var playerMover = _activePlayer.movementData;
                 if(playerMover.HasMadeAMoveThisTurn && !playerMover.IsMoving) {
-                    //Check for combat here
-                    
+                    checkForCombat();
                     _activeEnemies.ForEach(e => setEnemyExploreAction(e));
                     
                     _exploreState = ExploreStates.EnemyMoving;
@@ -182,22 +191,47 @@ public class GameController : MonoBehaviour
 
             case ExploreStates.EnemyMoving:
                 if(_activeEnemies.All(e => e.movementData.HasMadeAMoveThisTurn) && _activeEnemies.All(e => !e.movementData.IsMoving)) {
-                    //Check for combat here
-
+                    checkForCombat();
                     setNewRound();
+
                     _exploreState = ExploreStates.PlayerMoving;
                 }
             break;
         }
     }
 
+    void checkForCombat() {
+
+    }
+
     void setNewRound() {
+        _round++;
+
         _activePlayer.setNewRound();
         _activeEnemies.ForEach(e => e.setNewRound());
+
+        txtRoundNum.text = _round.ToString();
     }
 
     void setEnemyExploreAction(EnemyController e) {
-        e.movementData.setDestination(Vector3.right);
+        //Check if player is in same room
+        //Check if player is in sight
+
+        Vector3 moveTowards = Vector3.zero;
+        if((e.transform.position.x - _activePlayer.transform.position.x) > 0) {
+            moveTowards = Vector3.left;
+        }
+        else if((e.transform.position.x - _activePlayer.transform.position.x) < 0) {
+            moveTowards = Vector3.right;
+        }
+        else if((e.transform.position.z - _activePlayer.transform.position.z) > 0) {
+            moveTowards = Vector3.back;
+        }
+        else if((e.transform.position.z - _activePlayer.transform.position.z) < 0) {
+            moveTowards = Vector3.forward;
+        }
+
+        e.movementData.setDestination(moveTowards);
     }
 
 
