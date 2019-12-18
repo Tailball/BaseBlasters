@@ -6,9 +6,11 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     //UNITY LINKS
-
+    
 
     //MEMBERS (PRIVATE)
+    Vector3 _offset = Vector3.zero;
+    GameObject _target = null;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -22,6 +24,7 @@ public class CameraController : MonoBehaviour
     }
 
     void Update() {
+        followTarget();
     }
 
     void FixedUpdate() {
@@ -29,7 +32,22 @@ public class CameraController : MonoBehaviour
 
 
     //PRIVATE METHODS
+    void followTarget() {
+        if(_target == null) return;
+
+        transform.position = _target.transform.position + _offset;
+    }
+
+    void calculateOffset() {
+        if(_target == null) return;
+
+        _offset = transform.position - _target.transform.position;
+    }
 
 
     //PUBLIC METHODS
+    public void setTarget(GameObject newTarget) {
+        _target = newTarget;
+        calculateOffset();
+    }
 }

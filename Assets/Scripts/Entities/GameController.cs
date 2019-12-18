@@ -111,6 +111,9 @@ public class GameController : MonoBehaviour
         var player = Instantiate(SelectedPlayer, Vector3.zero, Quaternion.Euler(0, 180, 0));
         _activePlayer = player.GetComponent<PlayerController>();
 
+        CameraOrthographic.GetComponent<CameraController>().setTarget(player);
+        CameraPerspective.GetComponent<CameraController>().setTarget(player);
+
         _playState = PlayStates.Entering;
     }
 
