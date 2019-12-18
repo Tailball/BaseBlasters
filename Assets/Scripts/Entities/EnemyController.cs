@@ -2,28 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : CharacterBaseController
 {
     //UNITY LINKS
 
     
     //MEMBERS (PRIVATE)
+    float _timeToIdle = 10f;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
 
 
     //UNITY LIFECYCLE
-    void Awake() {
-
+    protected override void Awake() {
+        base.Awake();
     }
 
-    void Start() {
-        
+    protected override void Start() {
+        base.Start();
     }
 
-    void Update() {
-        
+    protected override void Update() {
+        base.Update();
+
+        if(!_isMoving) {
+            _timeToIdle -= Time.deltaTime * Random.Range(.1f, 7.5f);
+            if(_timeToIdle <= 0) {
+                _anim.SetTrigger("Idle");
+                _timeToIdle = 20f;
+            }
+        }
+    }
+
+    protected override void FixedUpdate() {
+        base.FixedUpdate();
     }
 
 
