@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: a566c3d885f1e4c69a550c8b4ede746f
+guid: 5e11a527c54b048d3940b0ac747bbd37
 ModelImporter:
   serializedVersion: 28
   internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -61,7 +61,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
