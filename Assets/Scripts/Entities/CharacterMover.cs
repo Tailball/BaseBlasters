@@ -78,7 +78,7 @@ public class CharacterMover : MonoBehaviour
 
 
     //PUBLIC METHODS
-    public void setDestination(Vector3 action) {
+    public void setMovementDirection(Vector3 action) {
         var currRotationAngle = transform.rotation.eulerAngles.y;
 
         if(action.x != 0) {
@@ -98,5 +98,14 @@ public class CharacterMover : MonoBehaviour
     public void setNewRound() {
         _madeAMoveThisTurn = false;
         _isMoving = false;
+    }
+
+    public bool isValidLocation(Vector3 loc) {
+        var floorUnits = Physics.OverlapSphere(loc, .2f, GameController.instance.FloorLayer);
+        var wallUnits = Physics.OverlapSphere(loc, .2f, GameController.instance.WallLayer);
+
+        if(floorUnits.Length > 0 && wallUnits.Length <= 0) return true;
+
+        return false;
     }
 }

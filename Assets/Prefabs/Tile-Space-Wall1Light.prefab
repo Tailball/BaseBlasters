@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6868275550631098981}
-  m_Layer: 0
-  m_Name: Tile-Space-5
+  - component: {fileID: 8413654500120473577}
+  m_Layer: 10
+  m_Name: Tile-Space-Wall1Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8413654500120473577
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823326917602915715}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.5632799, z: 1}
+  m_Center: {x: 0, y: 0.7786511, z: 0}
 --- !u!1 &5906707495759849039
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8532336450233849834}
   - component: {fileID: 259154856951429274}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,6 +144,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6868275550631098981}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 3ee5d1968ca4d4139901ea364f215ea5,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-5
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 3ee5d1968ca4d4139901ea364f215ea5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 3ee5d1968ca4d4139901ea364f215ea5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -199,11 +223,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 3ee5d1968ca4d4139901ea364f215ea5,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-5
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 3ee5d1968ca4d4139901ea364f215ea5,
         type: 3}

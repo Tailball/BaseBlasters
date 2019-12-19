@@ -26,6 +26,10 @@ public class GameController : MonoBehaviour
     [Header("Tweaking")]
     [SerializeField][Range(1f, 5f)] float EnterSpeed = 1f;
 
+    [Header("Physics Layers")]
+    [SerializeField] LayerMask DefFloorLayer;
+    [SerializeField] LayerMask DefWallLayer;
+
 
     //MEMBERS (PRIVATE)
     GameStates _gameState;
@@ -54,6 +58,14 @@ public class GameController : MonoBehaviour
 
     public ExploreStates exploreState {
         get { return _exploreState; }
+    }
+
+    public LayerMask FloorLayer {
+        get { return DefFloorLayer; }
+    }
+
+    public LayerMask WallLayer {
+        get { return DefWallLayer; }
     }
 
 
@@ -140,13 +152,13 @@ public class GameController : MonoBehaviour
     }
 
     void initializeEnemies() {
-        var enemy1 = Instantiate(Enemy, new Vector3(-2, 0, -2), Quaternion.Euler(0, 180, 0));
-        var enemy2 = Instantiate(Enemy, new Vector3(-1, 0, 3), Quaternion.Euler(0, 0, 0));
-        var enemy3 = Instantiate(Enemy, new Vector3(2, 0, 1), Quaternion.Euler(0, -90, 0));
+        // var enemy1 = Instantiate(Enemy, new Vector3(-2, 0, -2), Quaternion.Euler(0, 180, 0));
+        // var enemy2 = Instantiate(Enemy, new Vector3(-1, 0, 3), Quaternion.Euler(0, 0, 0));
+        // var enemy3 = Instantiate(Enemy, new Vector3(2, 0, 1), Quaternion.Euler(0, -90, 0));
 
-        _activeEnemies.Add(enemy1.GetComponent<EnemyController>());
-        _activeEnemies.Add(enemy2.GetComponent<EnemyController>());
-        _activeEnemies.Add(enemy3.GetComponent<EnemyController>());
+        // _activeEnemies.Add(enemy1.GetComponent<EnemyController>());
+        // _activeEnemies.Add(enemy2.GetComponent<EnemyController>());
+        // _activeEnemies.Add(enemy3.GetComponent<EnemyController>());
     }
 
     void initializeObjects() {
@@ -231,7 +243,7 @@ public class GameController : MonoBehaviour
             moveTowards = Vector3.forward;
         }
 
-        e.movementData.setDestination(moveTowards);
+        e.movementData.setMovementDirection(moveTowards);
     }
 
 

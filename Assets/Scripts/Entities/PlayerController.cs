@@ -45,7 +45,11 @@ public class PlayerController : MonoBehaviour
         var yAxis = Input.GetAxisRaw("Vertical");
 
         if(xAxis != 0 || yAxis != 0) {
-            _mover.setDestination(new Vector3(xAxis, 0, yAxis));
+            var dir = new Vector3(xAxis, 0, yAxis);
+            var desiredLocation = transform.position + dir;
+            
+            if(_mover.isValidLocation(desiredLocation))
+                _mover.setMovementDirection(dir);
         }
     }
 

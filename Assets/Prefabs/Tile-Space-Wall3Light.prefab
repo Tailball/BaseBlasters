@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4071734249038243099}
-  m_Layer: 0
-  m_Name: Tile-Space-6
+  - component: {fileID: 5284775424175705118}
+  m_Layer: 10
+  m_Name: Tile-Space-Wall3Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,6 +34,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5284775424175705118
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520209447504848999}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.630991, z: 3.04604}
+  m_Center: {x: 0, y: 0.808733, z: -0.013785362}
 --- !u!1 &7607438087254559840
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1911294753476737235}
   - component: {fileID: 6560485907864663777}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 549754268951428755}
   - component: {fileID: 4060137126303714095}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,6 +240,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tile-Space-6
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 9e125d948a34642d99abba7939a8729a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 9e125d948a34642d99abba7939a8729a,
         type: 3}

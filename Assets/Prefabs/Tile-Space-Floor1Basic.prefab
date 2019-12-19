@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2355101192986339121}
-  m_Layer: 0
-  m_Name: Tile-Space-1
+  - component: {fileID: 6849363097604559791}
+  m_Layer: 9
+  m_Name: Tile-Space-Floor1Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6849363097604559791
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5378580632566173627}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.5531068, z: 1}
+  m_Center: {x: 0, y: -0.16827488, z: 0}
 --- !u!1001 &5525489181007073848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38,11 +52,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2355101192986339121}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 5d2aa03000e36452986e59b53e5ecc9a,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-1
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5d2aa03000e36452986e59b53e5ecc9a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112,6 +121,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 5d2aa03000e36452986e59b53e5ecc9a,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-1
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 5d2aa03000e36452986e59b53e5ecc9a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 5d2aa03000e36452986e59b53e5ecc9a,
         type: 3}
