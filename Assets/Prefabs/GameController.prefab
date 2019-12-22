@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6247672662965961433}
   - component: {fileID: 6247672662965961438}
+  - component: {fileID: 3530899259232592363}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -43,7 +44,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3cc4521a346d406b84bd515118c9a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainUi: {fileID: 0}
   CameraOrthographic: {fileID: 0}
   CameraPerspective: {fileID: 0}
-  SelectedPlayer: {fileID: 0}
-  EnterSpeed: 3.5
+  txtRoundNum: {fileID: 0}
+  SelectedPlayer: {fileID: 1725720796838962547, guid: 73e26906168a3431b839efb92379088a,
+    type: 3}
+  EnterSpeed: 3.25
+  DefFloorLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  DefWallLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!114 &3530899259232592363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247672662965961439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd1ae756efd9401e9ef4ee7ada7f046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testEnemy: {fileID: 1276850568409898233, guid: de3339cc3093546098199c3fbb5907c1,
+    type: 3}

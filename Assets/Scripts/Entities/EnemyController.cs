@@ -51,4 +51,26 @@ public class EnemyController : MonoBehaviour
     public void setNewRound() {
         _mover.setNewRound();
     }
+
+    public void setExploreAction(Vector3 playerPos) {
+        //TODO:
+        //Check if player is in same room
+        //Check if player is in sight
+
+        Vector3 moveTowards = Vector3.zero;
+        if((transform.position.x - playerPos.x) > 0) {
+            moveTowards = Vector3.left;
+        }
+        else if((transform.position.x - playerPos.x) < 0) {
+            moveTowards = Vector3.right;
+        }
+        else if((transform.position.z - playerPos.z) > 0) {
+            moveTowards = Vector3.back;
+        }
+        else if((transform.position.z - playerPos.z) < 0) {
+            moveTowards = Vector3.forward;
+        }
+
+        _mover.setMovementDirection(moveTowards);
+    }
 }

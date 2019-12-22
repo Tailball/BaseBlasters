@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 
@@ -18,11 +17,11 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera CameraOrthographic = null;
     [SerializeField] Camera CameraPerspective = null;
     [SerializeField] TMP_Text txtRoundNum = null;
+    [SerializeField] GameObject RoomHolder = null;
 
-    [Header("Pools")]
+    [Header("Instances")]
     [SerializeField] GameObject SelectedPlayer = null; //This should change to character select that will pass on the selected playercontroller;
-    [SerializeField] GameObject Enemy = null; //Make seperate class that is able to create pools based on room, level and difficulty
-
+    
     [Header("Tweaking")]
     [SerializeField][Range(1f, 5f)] float EnterSpeed = 1f;
 
@@ -38,7 +37,8 @@ public class GameController : MonoBehaviour
     ExploreStates _exploreState;
     
     PlayerController _activePlayer;
-    List<EnemyController> _activeEnemies = new List<EnemyController>();
+    RoomController _activeRoom;
+    List<RoomController> _roomsOnFloor = new List<RoomController>();
 
     int _round = 0;
     
@@ -73,12 +73,11 @@ public class GameController : MonoBehaviour
     void Awake() {
         if(instance == null) {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else if(instance != this) {
             Destroy(gameObject);
         }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     void Start() {
@@ -137,8 +136,8 @@ public class GameController : MonoBehaviour
 
     void initialize() {
         initializePlayer();
-        initializeEnemies();
-        initializeObjects();
+        initializePool();
+        initializeFloor();
 
         CameraOrthographic.GetComponent<CameraController>().setTarget(_activePlayer.gameObject);
         CameraPerspective.GetComponent<CameraController>().setTarget(_activePlayer.gameObject);
@@ -151,18 +150,16 @@ public class GameController : MonoBehaviour
         _activePlayer = player.GetComponent<PlayerController>();
     }
 
-    void initializeEnemies() {
-        // var enemy1 = Instantiate(Enemy, new Vector3(-2, 0, -2), Quaternion.Euler(0, 180, 0));
-        // var enemy2 = Instantiate(Enemy, new Vector3(-1, 0, 3), Quaternion.Euler(0, 0, 0));
-        // var enemy3 = Instantiate(Enemy, new Vector3(2, 0, 1), Quaternion.Euler(0, -90, 0));
+    void initializePool() {
 
-        // _activeEnemies.Add(enemy1.GetComponent<EnemyController>());
-        // _activeEnemies.Add(enemy2.GetComponent<EnemyController>());
-        // _activeEnemies.Add(enemy3.GetComponent<EnemyController>());
     }
 
-    void initializeObjects() {
-
+    void initializeFloor() {
+        var testRoom = Instantiate(PoolController.instance.getRoom(), Vector3.zero, Quaternion.identity, RoomHolder.transform);
+        var roomController = testRoom.GetComponent<RoomController>();
+        _roomsOnFloor.Add(roomController);
+        _activeRoom = roomController;
+        _activeRoom.enemies.instantiateEnemies();
     }
 
     void enter() {
@@ -195,14 +192,16 @@ public class GameController : MonoBehaviour
                 var playerMover = _activePlayer.movementData;
                 if(playerMover.HasMadeAMoveThisTurn && !playerMover.IsMoving) {
                     checkForCombat();
-                    _activeEnemies.ForEach(e => setEnemyExploreAction(e));
+                    _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
                     
                     _exploreState = ExploreStates.EnemyMoving;
                 }
             break;
 
             case ExploreStates.EnemyMoving:
-                if(_activeEnemies.All(e => e.movementData.HasMadeAMoveThisTurn) && _activeEnemies.All(e => !e.movementData.IsMoving)) {
+                var allEnemiesMadeAMoveThisTurn = _activeRoom.enemies.haveAllEnemiesMadeAMoveThisTurn();
+                var allEnemiesDoneMoving = _activeRoom.enemies.haveAllEnemiesStoppedMoving();
+                if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
                     checkForCombat();
                     setNewRound();
 
@@ -220,30 +219,9 @@ public class GameController : MonoBehaviour
         _round++;
 
         _activePlayer.setNewRound();
-        _activeEnemies.ForEach(e => e.setNewRound());
+        _activeRoom.setNewRound();
 
         txtRoundNum.text = _round.ToString();
-    }
-
-    void setEnemyExploreAction(EnemyController e) {
-        //Check if player is in same room
-        //Check if player is in sight
-
-        Vector3 moveTowards = Vector3.zero;
-        if((e.transform.position.x - _activePlayer.transform.position.x) > 0) {
-            moveTowards = Vector3.left;
-        }
-        else if((e.transform.position.x - _activePlayer.transform.position.x) < 0) {
-            moveTowards = Vector3.right;
-        }
-        else if((e.transform.position.z - _activePlayer.transform.position.z) > 0) {
-            moveTowards = Vector3.back;
-        }
-        else if((e.transform.position.z - _activePlayer.transform.position.z) < 0) {
-            moveTowards = Vector3.forward;
-        }
-
-        e.movementData.setMovementDirection(moveTowards);
     }
 
 
