@@ -5,12 +5,26 @@ using UnityEngine;
 public class CardController : MonoBehaviour
 {
     //UNITY LINKS
-
+    [Header("Links")]
+    [SerializeField] string CardName;
+    [SerializeField] Sprite CardImage = null; //Could also do this manually by just inserting the image
+    [SerializeField][Multiline] string CardDescription;
+    [SerializeField] CardTypes CardType;
     
-    //MEMBERS (PRIVATE)
 
+    //MEMBERS (PRIVATE)
+    private bool _isDragging = false;
+    private Vector3 _positionBeforeDragging;
+    
 
     //ACCESSORS - MUTATORS (PUBLIC)
+    public string Name {
+        get { return CardName; }
+    }
+
+    public string Description {
+        get { return CardDescription; }
+    }
 
 
     //UNITY LIFECYCLE
@@ -24,6 +38,15 @@ public class CardController : MonoBehaviour
 
     void Update() {
         
+    }
+
+    void OnMouseDown() {
+        _positionBeforeDragging = transform.position;
+        _isDragging = true;
+    }
+
+    void OnMouseUp() {
+        _isDragging = false;
     }
 
 

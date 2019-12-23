@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     //PRIVATE METHODS
     void getInput() {  
-        if(_mover.IsMoving) return;
+        if(_mover.isMoving) return;
         if(GameController.instance.playState != PlayStates.Exploring) return;
         if(GameController.instance.exploreState != ExploreStates.PlayerMoving) return;
 

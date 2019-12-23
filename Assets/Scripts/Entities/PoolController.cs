@@ -11,8 +11,9 @@ public class PoolController : MonoBehaviour
 
 
     //UNITY LINKS
-    public GameObject testEnemy = null;
-    public GameObject testRoom = null;
+    public EnemyController testEnemy = null;
+    public RoomController testRoom = null;
+    public CardController testCard = null;
 
     //MEMBERS (PRIVATE)
     private CardPool _cardpool;
@@ -55,11 +56,15 @@ public class PoolController : MonoBehaviour
 
 
     //PUBLIC METHODS
-    public GameObject getEnemy() {
+    public EnemyController getEnemy() {
         return testEnemy;
     }
 
-    public GameObject getRoom() {
+    public RoomController getRoom() {
         return testRoom;
+    }
+
+    public CardController getCard() {
+        return testCard;
     }
 }

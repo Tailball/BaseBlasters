@@ -31,7 +31,7 @@ public class EnemyController : MonoBehaviour
    }
 
    void Update() {
-        if(!_mover.IsMoving) {
+        if(!_mover.isMoving) {
             _timeToIdle -= Time.deltaTime * Random.Range(.1f, 7.5f);
             if(_timeToIdle <= 0) {
                 _anim.SetTrigger("Idle");

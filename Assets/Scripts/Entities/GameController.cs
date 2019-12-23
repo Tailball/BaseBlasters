@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -36,9 +35,9 @@ public class GameController : MonoBehaviour
     CombatStates _combatState;
     ExploreStates _exploreState;
     
-    PlayerController _activePlayer;
-    RoomController _activeRoom;
     List<RoomController> _roomsOnFloor = new List<RoomController>();
+    RoomController _activeRoom;
+    PlayerController _activePlayer;
 
     int _round = 0;
     
@@ -60,11 +59,11 @@ public class GameController : MonoBehaviour
         get { return _exploreState; }
     }
 
-    public LayerMask FloorLayer {
+    public LayerMask floorLayer {
         get { return DefFloorLayer; }
     }
 
-    public LayerMask WallLayer {
+    public LayerMask wallLayer {
         get { return DefWallLayer; }
     }
 
@@ -83,7 +82,7 @@ public class GameController : MonoBehaviour
     void Start() {
         MainUi.SetActive(false);
 
-        this._gameState = GameStates.Ingame; 
+        this._gameState = GameStates.ContentGeneration; 
         this._playState = PlayStates.Initializing;
         this._combatState = 0;
         this._exploreState = ExploreStates.PlayerMoving;
@@ -100,7 +99,7 @@ public class GameController : MonoBehaviour
             break;
 
             case GameStates.ContentGeneration:
-                //Todo
+                handleContentGeneration();
             break;
 
             case GameStates.Ingame:
@@ -111,6 +110,11 @@ public class GameController : MonoBehaviour
 
 
     //PRIVATE METHODS
+    void handleContentGeneration() {
+        //TODO
+        _gameState = GameStates.Ingame;
+    }
+
     void handlePlayState() {
         switch(_playState) {
             case PlayStates.Initializing:
@@ -135,19 +139,15 @@ public class GameController : MonoBehaviour
     }
 
     void initialize() {
-        initializePlayer();
         initializePool();
         initializeFloor();
+        initializePlayer();
+        initializeDeck();
 
         CameraOrthographic.GetComponent<CameraController>().setTarget(_activePlayer.gameObject);
         CameraPerspective.GetComponent<CameraController>().setTarget(_activePlayer.gameObject);
 
         _playState = PlayStates.Entering;
-    }
-
-    void initializePlayer() {
-        var player = Instantiate(SelectedPlayer, Vector3.zero, Quaternion.Euler(0, 180, 0));
-        _activePlayer = player.GetComponent<PlayerController>();
     }
 
     void initializePool() {
@@ -160,6 +160,42 @@ public class GameController : MonoBehaviour
         _roomsOnFloor.Add(roomController);
         _activeRoom = roomController;
         _activeRoom.enemies.instantiateEnemies();
+    }
+
+    void initializePlayer() {
+        var player = Instantiate(SelectedPlayer, Vector3.zero, Quaternion.Euler(0, 180, 0));
+        _activePlayer = player.GetComponent<PlayerController>();
+    }
+
+    void initializeDeck() {
+        var dInst = DeckController.instance;
+        dInst.setStartSizeAndFillPool(12);
+
+        Debug.Log($"initialized. deck size: {dInst.amountOfCards}");
+
+        Debug.Log($"drawing 6 cards...");
+        var cardhand = dInst.drawCards(6);
+        for(var i = 0; i < cardhand.Count; i++) {
+            Debug.Log($"card {i+1}: {cardhand[i].name}");
+        }
+        
+        Debug.Log($"drawn. deck size: {dInst.amountOfCards}");
+
+        Debug.Log($"drawing 8 cards...");
+        var cardhand2 = dInst.drawCards(8);
+        for(var i = 0; i < cardhand2.Count; i++) {
+            Debug.Log($"card {i+1}: {cardhand2[i].name}");
+        }
+
+        Debug.Log($"drawn. deck size: {dInst.amountOfCards}");
+
+        Debug.Log($"drawing 6 cards...");
+        var cardhand3 = dInst.drawCards(8);
+        for(var i = 0; i < cardhand3.Count; i++) {
+            Debug.Log($"card {i+1}: {cardhand3[i].name}");
+        }
+
+        Debug.Log($"drawn. deck size: {dInst.amountOfCards}");
     }
 
     void enter() {
@@ -190,7 +226,7 @@ public class GameController : MonoBehaviour
         switch(_exploreState) {
             case ExploreStates.PlayerMoving:
                 var playerMover = _activePlayer.movementData;
-                if(playerMover.HasMadeAMoveThisTurn && !playerMover.IsMoving) {
+                if(playerMover.hasMadeAMoveThisTurn && !playerMover.isMoving) {
                     checkForCombat();
                     _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
                     

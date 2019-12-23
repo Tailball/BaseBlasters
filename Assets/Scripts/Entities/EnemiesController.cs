@@ -45,11 +45,11 @@ public class EnemiesController : MonoBehaviour
     }
 
     public bool haveAllEnemiesMadeAMoveThisTurn() {
-        return this._enemiesInRoom.All(e => e.movementData.HasMadeAMoveThisTurn);
+        return this._enemiesInRoom.All(e => e.movementData.hasMadeAMoveThisTurn);
     }
 
     public bool haveAllEnemiesStoppedMoving() {
-        return this._enemiesInRoom.All(e => !e.movementData.IsMoving);
+        return this._enemiesInRoom.All(e => !e.movementData.isMoving);
     }
 
     public void setNewRound() {

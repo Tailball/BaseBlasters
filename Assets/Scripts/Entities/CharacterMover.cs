@@ -21,15 +21,15 @@ public class CharacterMover : MonoBehaviour
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
-    public Vector3 Position {
+    public Vector3 position {
         get { return new Vector3(transform.position.x, 0, transform.position.z); }
     }
 
-    public bool HasMadeAMoveThisTurn {
+    public bool hasMadeAMoveThisTurn {
         get { return _madeAMoveThisTurn; }
     }
 
-    public bool IsMoving {
+    public bool isMoving {
         get { return _isMoving; }
     }
 
@@ -101,8 +101,8 @@ public class CharacterMover : MonoBehaviour
     }
 
     public bool isValidLocation(Vector3 loc) {
-        var floorUnits = Physics.OverlapSphere(loc, .2f, GameController.instance.FloorLayer);
-        var wallUnits = Physics.OverlapSphere(loc, .2f, GameController.instance.WallLayer);
+        var floorUnits = Physics.OverlapSphere(loc, .2f, GameController.instance.floorLayer);
+        var wallUnits = Physics.OverlapSphere(loc, .2f, GameController.instance.wallLayer);
 
         if(floorUnits.Length > 0 && wallUnits.Length <= 0) return true;
 
