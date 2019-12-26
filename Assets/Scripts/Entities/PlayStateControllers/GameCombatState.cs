@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class GameCombatController : MonoBehaviour
+public class GameCombatState : MonoBehaviour
 {
     //UNITY LINKS
     CombatStates _state;

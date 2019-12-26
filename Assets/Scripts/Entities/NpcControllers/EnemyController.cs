@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 {
     //UNITY LINKS
     [Header("Links")]
-    [SerializeField] List<CardController> EnemyCards;
+    [SerializeField] List<CardController> EnemyCards = new List<CardController>();
     [SerializeField] int HealthPoints;
 
     

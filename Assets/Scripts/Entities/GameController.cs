@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GameExploreController))]
-[RequireComponent(typeof(GameCombatController))]
+
+[RequireComponent(typeof(GameExploreState))]
+[RequireComponent(typeof(GameCombatState))]
+[RequireComponent(typeof(GameEnterState))]
 [RequireComponent(typeof(PoolController))]
 [RequireComponent(typeof(DeckController))]
 public class GameController : MonoBehaviour
@@ -20,22 +22,20 @@ public class GameController : MonoBehaviour
 
     [Header("Instances")]
     [SerializeField] GameObject SelectedPlayer = null; //This should change to character select that will pass on the selected playercontroller;
-    
-    [Header("Tweaking")]
-    [SerializeField][Range(1f, 5f)] float EnterSpeed = 1f;
 
     [Header("Physics Layers")]
-    [SerializeField] LayerMask DefFloorLayer;
-    [SerializeField] LayerMask DefWallLayer;
-    [SerializeField] LayerMask DefNPCLayer;
+    [SerializeField] LayerMask DefFloorLayer = 0;
+    [SerializeField] LayerMask DefWallLayer = 0;
+    [SerializeField] LayerMask DefNPCLayer = 0;
 
 
     //MEMBERS (PRIVATE)
     GameStates _gameState;
     PlayStates _playState;
     
-    GameExploreController _exploreController = null;
-    GameCombatController _combatController = null;
+    GameExploreState _exploreState = null;
+    GameCombatState _combatState = null;
+    GameEnterState _enterState = null;
         
     List<RoomController> _roomsOnFloor = new List<RoomController>();
     RoomController _activeRoom;
@@ -52,11 +52,11 @@ public class GameController : MonoBehaviour
     }
 
     public ExploreStates passedExploreState {
-        get { return _exploreController.state; }
+        get { return _exploreState.state; }
     }
 
     public CombatStates passedCombatState {
-        get { return _combatController.state; }
+        get { return _combatState.state; }
     }
 
     public LayerMask floorLayer {
@@ -90,8 +90,9 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _exploreController = GetComponent<GameExploreController>();
-        _combatController = GetComponent<GameCombatController>();
+        _exploreState = GetComponent<GameExploreState>();
+        _combatState = GetComponent<GameCombatState>();
+        _enterState = GetComponent<GameEnterState>();
     }
 
     void Start() {
@@ -133,15 +134,15 @@ public class GameController : MonoBehaviour
             break;
 
             case PlayStates.Entering:
-                execEnter();
+                _enterState.exec();
             break;
 
             case PlayStates.Exploring:
-                _exploreController.exec();
+                _exploreState.exec();
             break;
 
             case PlayStates.Combat:
-                _combatController.exec();
+                _combatState.exec();
             break;
 
             case PlayStates.Exiting:
@@ -158,7 +159,8 @@ public class GameController : MonoBehaviour
         initializePlayer();
         initializeDeck();
 
-        _exploreController.setExploringCameraTarget(_activePlayer.gameObject);
+        _enterState.setCamera(_exploreState.cameraPerspective);
+        _exploreState.setExploringCameraTarget(_activePlayer.gameObject);
         changePlaystateToEntering();
     }
 
@@ -182,22 +184,6 @@ public class GameController : MonoBehaviour
         DeckController.instance.setStartSizeAndFillPool(6);
     }
 
-    void execEnter() {
-        var cam = _exploreController.cameraPerspective;
-        cam.nearClipPlane -= Time.deltaTime * EnterSpeed;
-
-        if(cam.nearClipPlane <= 3.8f) {
-            cam.nearClipPlane = 3.8f;
-            
-            _exploreController.setNewExploreRound();
-
-            ExploreUI.SetActive(true);
-            CombatUI.SetActive(false);
-
-            changePlaystateToExploring();
-        }
-    }
-
 
     //PUBLIC METHODS
     public void changePlaystateToInitializing() {
@@ -205,26 +191,34 @@ public class GameController : MonoBehaviour
     }
 
     public void changePlaystateToEntering() {
+        _enterState.enabled = true;
+        _combatState.enabled = false;
+        _exploreState.enabled = false;
+
         _playState = PlayStates.Entering;
     }
 
     public void changePlaystateToCombat(EnemyController withEnemy) {
-        _combatController.enabled = false;
-        _exploreController.enabled = true;
+        _enterState.enabled = false;
+        _combatState.enabled = false;
+        _exploreState.enabled = true;
         
         ExploreUI.SetActive(false);
         CombatUI.SetActive(true);
 
-        _combatController.setActiveEnemy(withEnemy);
+        _combatState.setActiveEnemy(withEnemy);
         _playState = PlayStates.Combat;
     }
 
     public void changePlaystateToExploring() {
-        _combatController.enabled = false;
-        _exploreController.enabled = true;
+        _enterState.enabled = false;
+        _combatState.enabled = false;
+        _exploreState.enabled = true;
         
         ExploreUI.SetActive(true);
         CombatUI.SetActive(false);
+
+        _exploreState.setNewExploreRound();
 
         _playState = PlayStates.Exploring;
     }
@@ -235,6 +229,6 @@ public class GameController : MonoBehaviour
     }
 
     public void acceptPlayerMove() {
-        _combatController.acceptPlayerMove();
+        _combatState.acceptPlayerMove();
     }
 }

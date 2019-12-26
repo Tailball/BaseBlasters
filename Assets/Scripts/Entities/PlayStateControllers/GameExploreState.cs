@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 
-public class GameExploreController : MonoBehaviour
+public class GameExploreState : MonoBehaviour
 {
     //UNITY LINKS
     [SerializeField] Camera CameraOrthographic = null;

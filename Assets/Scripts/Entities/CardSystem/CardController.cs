@@ -12,7 +12,7 @@ public class CardController : MonoBehaviour,
 {
     //UNITY LINKS
     [Header("Links")]
-    [SerializeField] CardTypes CardType;
+    [SerializeField] CardTypes CardType = CardTypes.Combat;
     
 
     //MEMBERS (PRIVATE)

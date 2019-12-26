@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6247672662965961433}
   - component: {fileID: 6247672662965961438}
+  - component: {fileID: 1996028983113001618}
   - component: {fileID: 4693986833421357652}
   - component: {fileID: 96642088965080536}
   - component: {fileID: 3530899259232592363}
@@ -52,7 +53,6 @@ MonoBehaviour:
   RoomHolder: {fileID: 0}
   SelectedPlayer: {fileID: 1725720796838962547, guid: 73e26906168a3431b839efb92379088a,
     type: 3}
-  EnterSpeed: 3.25
   DefFloorLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -62,6 +62,19 @@ MonoBehaviour:
   DefNPCLayer:
     serializedVersion: 2
     m_Bits: 2048
+--- !u!114 &1996028983113001618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247672662965961439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99511889862248c4a3dc20e83e45ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnterSpeed: 3.25
 --- !u!114 &4693986833421357652
 MonoBehaviour:
   m_ObjectHideFlags: 0
