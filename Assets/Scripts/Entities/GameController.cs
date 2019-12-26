@@ -12,7 +12,9 @@ public class GameController : MonoBehaviour
 
     //UNITY LINKS
     [Header("Linking")]
-    [SerializeField] GameObject MainUi = null;
+    [SerializeField] GameObject ExploreUI = null;
+    [SerializeField] GameObject CombatUI = null;
+
     [SerializeField] Camera CameraOrthographic = null;
     [SerializeField] Camera CameraPerspective = null;
     [SerializeField] TMP_Text txtRoundNum = null;
@@ -27,6 +29,7 @@ public class GameController : MonoBehaviour
     [Header("Physics Layers")]
     [SerializeField] LayerMask DefFloorLayer;
     [SerializeField] LayerMask DefWallLayer;
+    [SerializeField] LayerMask DefNPCLayer;
 
 
     //MEMBERS (PRIVATE)
@@ -80,12 +83,13 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
-        MainUi.SetActive(false);
+        ExploreUI.SetActive(false);
+        CombatUI.SetActive(false);
 
         this._gameState = GameStates.ContentGeneration; 
         this._playState = PlayStates.Initializing;
-        this._combatState = 0;
         this._exploreState = ExploreStates.PlayerMoving;
+        this._combatState = CombatStates.DrawingCards;
     }
 
     void Update() {
@@ -118,19 +122,20 @@ public class GameController : MonoBehaviour
     void handlePlayState() {
         switch(_playState) {
             case PlayStates.Initializing:
-                initialize();
+                execInitialize();
             break;
 
             case PlayStates.Entering:
-                enter();
+                execEnter();
             break;
 
             case PlayStates.Exploring:
                 getExploringInput();
-                explore();
+                execExplore();
             break;
 
             case PlayStates.Combat:
+                execCombat();
             break;
 
             case PlayStates.Exiting:
@@ -138,7 +143,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void initialize() {
+    void execInitialize() {
         initializePool();
         initializeFloor();
         initializePlayer();
@@ -168,45 +173,127 @@ public class GameController : MonoBehaviour
     }
 
     void initializeDeck() {
-        var dInst = DeckController.instance;
-        dInst.setStartSizeAndFillPool(12);
-
-        Debug.Log($"initialized. deck size: {dInst.amountOfCards}");
-
-        Debug.Log($"drawing 6 cards...");
-        var cardhand = dInst.drawCards(6);
-        for(var i = 0; i < cardhand.Count; i++) {
-            Debug.Log($"card {i+1}: {cardhand[i].name}");
-        }
-        
-        Debug.Log($"drawn. deck size: {dInst.amountOfCards}");
-
-        Debug.Log($"drawing 8 cards...");
-        var cardhand2 = dInst.drawCards(8);
-        for(var i = 0; i < cardhand2.Count; i++) {
-            Debug.Log($"card {i+1}: {cardhand2[i].name}");
-        }
-
-        Debug.Log($"drawn. deck size: {dInst.amountOfCards}");
-
-        Debug.Log($"drawing 6 cards...");
-        var cardhand3 = dInst.drawCards(8);
-        for(var i = 0; i < cardhand3.Count; i++) {
-            Debug.Log($"card {i+1}: {cardhand3[i].name}");
-        }
-
-        Debug.Log($"drawn. deck size: {dInst.amountOfCards}");
+        DeckController.instance.setStartSizeAndFillPool(6);
     }
 
-    void enter() {
+    void execEnter() {
         CameraPerspective.nearClipPlane -= Time.deltaTime * EnterSpeed;
+
         if(CameraPerspective.nearClipPlane <= 3.8f) {
             CameraPerspective.nearClipPlane = 3.8f;
             _playState = PlayStates.Exploring;
             
             setNewRound();
-            MainUi.SetActive(true);
+            ExploreUI.SetActive(true);
+            CombatUI.SetActive(false);
         }
+    }
+
+    void execExplore() {
+        switch(_exploreState) {
+            case ExploreStates.PlayerMoving:
+                var playerMover = _activePlayer.movementData;
+
+                if(playerMover.hasMadeAMoveThisTurn && !playerMover.isMoving) {
+                    var combat = checkForCombat();
+
+                    if(!combat) {
+                        _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
+                        _exploreState = ExploreStates.EnemyMoving;
+                    }
+                    else {
+                        setNewRound();
+                        _exploreState = ExploreStates.PlayerMoving;
+                        _playState = PlayStates.Combat;
+                    }
+                }
+            break;
+
+            case ExploreStates.EnemyMoving:
+                var allEnemiesMadeAMoveThisTurn = _activeRoom.enemies.haveAllEnemiesMadeAMoveThisTurn();
+                var allEnemiesDoneMoving = _activeRoom.enemies.haveAllEnemiesStoppedMoving();
+
+                if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
+                    setNewRound();
+                    var combat = checkForCombat();
+
+                    if(!combat) {
+                        _exploreState = ExploreStates.PlayerMoving;
+                    }
+                    else {
+                        _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
+                        _exploreState = ExploreStates.EnemyMoving;
+                        _playState = PlayStates.Combat;
+                    }
+                }
+            break;
+        }
+    }
+
+    void execCombat() {
+        switch(_combatState) {
+            case CombatStates.DrawingCards:
+                DeckController.instance.drawCardsToHand(2);
+                _combatState = CombatStates.EnemyTurn;
+            break;
+
+            case CombatStates.EnemyTurn:
+                //Put any active cards in discard pile
+                //Select card and play
+                _combatState = CombatStates.PlayerTurn;
+            break;
+
+            case CombatStates.PlayerTurn:
+                //Wait for cards (func playerMadeCardMove())
+                //Will automatically go to resolve
+            break;
+
+            case CombatStates.Resolve:
+                //Apply both cards
+                //Define if anyone died
+                //Go either to EndCombat or EnemyTurn state
+                _combatState = CombatStates.EndCombat;
+            break;
+
+            case CombatStates.EndCombat:
+                DeckController.instance.moveDropPointToDiscard();
+                DeckController.instance.moveHandToDeck();
+
+                var deck = DeckController.instance.amountOfCardsInDeck;
+                var discard = DeckController.instance.amountOfCardsInDiscardPile;
+                var hand = DeckController.instance.amountOfCardsInHand;
+                Debug.Log($"After combat. deck: {deck}, hand: {hand}, discard: {discard}");
+
+                //Apply xp, rewards, animations...
+                _combatState = CombatStates.DrawingCards;
+                _playState = PlayStates.Exploring;
+            break;        
+        }
+    }
+
+    bool checkForCombat() {
+        var colliders = Physics.OverlapSphere(_activePlayer.transform.position, .2f, DefNPCLayer);
+        
+        if(colliders.Length > 0) {
+            var enemy = colliders[0];
+            _playState = PlayStates.Combat;
+
+            ExploreUI.SetActive(false);
+            CombatUI.SetActive(true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    void setNewRound() {
+        _round++;
+
+        _activePlayer.setNewRound();
+        _activeRoom.setNewRound();
+
+        txtRoundNum.text = _round.ToString();
     }
 
     void getExploringInput() {
@@ -222,44 +309,15 @@ public class GameController : MonoBehaviour
         CameraPerspective.gameObject.SetActive(!CameraPerspective.gameObject.activeInHierarchy);
     }
 
-    void explore() {
-        switch(_exploreState) {
-            case ExploreStates.PlayerMoving:
-                var playerMover = _activePlayer.movementData;
-                if(playerMover.hasMadeAMoveThisTurn && !playerMover.isMoving) {
-                    checkForCombat();
-                    _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
-                    
-                    _exploreState = ExploreStates.EnemyMoving;
-                }
-            break;
-
-            case ExploreStates.EnemyMoving:
-                var allEnemiesMadeAMoveThisTurn = _activeRoom.enemies.haveAllEnemiesMadeAMoveThisTurn();
-                var allEnemiesDoneMoving = _activeRoom.enemies.haveAllEnemiesStoppedMoving();
-                if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
-                    checkForCombat();
-                    setNewRound();
-
-                    _exploreState = ExploreStates.PlayerMoving;
-                }
-            break;
-        }
-    }
-
-    void checkForCombat() {
-
-    }
-
-    void setNewRound() {
-        _round++;
-
-        _activePlayer.setNewRound();
-        _activeRoom.setNewRound();
-
-        txtRoundNum.text = _round.ToString();
-    }
-
 
     //PUBLIC METHODS
+    public void playerMadeCardMove() {
+        //TODO: 
+        //1. define current monster we're fighting
+        //2. set monsters card before player move
+        //3. define if cards have been placed (this function = actual trigger)
+        //4. move to resolve state
+
+        _combatState = CombatStates.Resolve;
+    }
 }

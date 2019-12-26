@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 2267119422538752120}
   - component: {fileID: 7649910385500276915}
   - component: {fileID: 6909213963459809946}
-  m_Layer: 0
-  m_Name: Monster-Grunt
-  m_TagString: Untagged
+  - component: {fileID: 2671012835551749430}
+  m_Layer: 11
+  m_Name: Monster-GruntLeader
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,6 +76,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e92ead85525143d781aa531094104ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &2671012835551749430
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276850568409898233}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.76264715, y: 0.9662533, z: 0.7410524}
+  m_Center: {x: 0, y: 0.50069666, z: 0.01362884}
 --- !u!1 &2858785027548239310
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +99,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8155088714966064627}
   - component: {fileID: 1061819896353871266}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AnimatedObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,6 +151,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Monster-GruntLeader
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 2ca0cb22474b84e1f8a030123535c905,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 2ca0cb22474b84e1f8a030123535c905,
         type: 3}

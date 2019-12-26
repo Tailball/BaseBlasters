@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 public class DeckController : MonoBehaviour
 {
     //SINGLETON PATTERN
@@ -14,19 +15,60 @@ public class DeckController : MonoBehaviour
     //UNITY LINKS
     [Header("Links")]
     [SerializeField] TMP_Text TxtDeckSize;
+
+    [SerializeField] Transform DeckPile = null;
+    [SerializeField] Transform DiscardPile = null;
+    [SerializeField] RectTransform HandPile = null;
+    [SerializeField] Transform TempPile = null;
+
+    [SerializeField] public RectTransform PlayerDropPoint = null;
+    [SerializeField] public RectTransform EnemyDropPoint = null;
     
 
     //MEMBERS (PRIVATE)
-    private List<CardController> _deck;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
     public List<CardController> deck {
-        get { return _deck; }
+        get { 
+            return DeckPile.GetComponentsInChildren<CardController>().ToList();
+        }
     }
 
-    public int amountOfCards {
-        get { return _deck.Count(); }
+    public List<CardController> discard {
+        get { 
+            return DiscardPile.GetComponentsInChildren<CardController>().ToList();
+        }
+    }
+
+    public List<CardController> hand {
+        get {
+            return HandPile.GetComponentsInChildren<CardController>().ToList();
+        }
+    }
+
+    public CardController playerDrop {
+        get {
+            return PlayerDropPoint.GetComponentInChildren<CardController>();
+        }
+    }
+
+    public CardController enemyDrop {
+        get {
+            return EnemyDropPoint.GetComponentInChildren<CardController>();
+        }
+    }
+
+    public int amountOfCardsInDeck {
+        get { return deck.Count(); }
+    }
+
+    public int amountOfCardsInDiscardPile {
+        get { return discard.Count(); }
+    }
+
+    public int amountOfCardsInHand {
+        get { return hand.Count(); }
     }
 
 
@@ -41,53 +83,95 @@ public class DeckController : MonoBehaviour
         }
     }
 
-    void Start() {
-        _deck = new List<CardController>();
-    }
-
-    void Update() {
-        
-    }
-
 
     //PRIVATE METHODS
 
 
     //PUBLIC METHODS
+    public void shuffle() {
+        var cardsInDeck = deck;
+        cardsInDeck.ForEach(c => c.transform.SetParent(TempPile));
+
+        var cardsInDeckShuffled = cardsInDeck.OrderBy(c => Guid.NewGuid()).ToList();
+        cardsInDeckShuffled.ForEach(c => c.transform.SetParent(DeckPile));
+    }
+
     public void setStartSizeAndFillPool(int amount) {
         for(var i = 0; i < amount; i++) {
-            _deck.Add(PoolController.instance.getCard().GetComponent<CardController>());
+            var c = PoolController.instance.getCard().GetComponent<CardController>();
+
+            var instance = Instantiate(c, Vector3.zero, Quaternion.identity, DeckPile);
+            instance.SetId(Guid.NewGuid());
         }
 
         shuffle();
     }
 
-    public void shuffle() {
-        _deck = _deck.OrderBy(d => new Guid()).ToList();
-    }
-
-    public List<CardController> drawCards(int amount) {
-        var drawn = new List<CardController>();
-
+    public void drawCardsToHand(int amount) {
         for(var i = 0; i < amount; i++) {
-            if(_deck.Count > 0) {
-                drawn.Add(_deck[0]);
-                _deck.RemoveAt(0);
+            if(amountOfCardsInDeck > 0) {
+                var card = this.deck.First();
+                card.transform.SetParent(HandPile);
             }
         }
-
-        return drawn;
     }
 
-    public void addCards(List<CardController> cards) {
-        _deck.AddRange(cards);
+    public void addCardToDeck(CardController card) {
+        card.transform.SetParent(DeckPile);
         shuffle();
     }
 
-    public void discardCards(int amount) {
+    public void addCardsToDeck(List<CardController> cards) {
+        cards.ForEach(c => {
+            c.transform.SetParent(DeckPile);
+        });
+
+        shuffle();
+    }
+
+    public void moveCardsFromDeckToDiscardPile(int amount) {
         for(var i = 0; i < amount; i++) {
-            if(_deck.Count > 0)
-                _deck.RemoveAt(0);
+            if(amountOfCardsInDeck > 0) {
+                var card = this.deck.First();
+                card.transform.SetParent(DiscardPile);
+            }
         }
+    }
+
+    public void moveHandToDiscardPile() {
+        hand.ForEach(c => {
+            c.transform.SetParent(DiscardPile);
+        });
+    }
+
+    public void moveHandToDeck() {
+        hand.ForEach(c => {
+            c.transform.SetParent(DeckPile);
+        });
+
+        shuffle();
+    }
+
+    public void moveDiscardPileToDeck() {
+        discard.ForEach(c => {
+            c.transform.SetParent(DeckPile);
+        });
+
+        shuffle();
+    }
+
+    public void moveCardToDropPoint(CardController card) {
+        card.transform.SetParent(PlayerDropPoint, false);
+        card.transform.position = PlayerDropPoint.transform.position;
+
+        GameController.instance.playerMadeCardMove();
+    }
+
+    public void moveCardToDiscard(CardController card) {
+        card.transform.SetParent(DiscardPile);
+    }
+
+    public void moveDropPointToDiscard() {
+        playerDrop.transform.SetParent(DiscardPile);
     }
 }

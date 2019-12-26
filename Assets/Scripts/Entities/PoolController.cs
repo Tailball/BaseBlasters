@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +14,10 @@ public class PoolController : MonoBehaviour
     //UNITY LINKS
     public EnemyController testEnemy = null;
     public RoomController testRoom = null;
-    public CardController testCard = null;
+    public List<CardController> cards = new List<CardController>();
+
 
     //MEMBERS (PRIVATE)
-    private CardPool _cardpool;
-    private EnemyPool _enemypool;
-    private RoomPool _roompool;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -49,9 +48,6 @@ public class PoolController : MonoBehaviour
 
     //PRIVATE METHODS
     private void setupInternals() {
-        _cardpool = new CardPool();
-        _enemypool = new EnemyPool();
-        _roompool = new RoomPool();
     }
 
 
@@ -65,6 +61,13 @@ public class PoolController : MonoBehaviour
     }
 
     public CardController getCard() {
-        return testCard;
+        if(cards.Count > 0) {
+            var c = cards.First();
+            cards.RemoveAt(0);
+
+            return c;
+        }
+        
+        return null;
     }
 }

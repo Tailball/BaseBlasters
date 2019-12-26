@@ -1,3 +1,7 @@
 public enum CombatStates {
-    //todo
+    DrawingCards,
+    EnemyTurn,
+    PlayerTurn,
+    Resolve,
+    EndCombat
 }
