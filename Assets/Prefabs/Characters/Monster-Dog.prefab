@@ -110,7 +110,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7126116201837212018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c085eafc0714a3f83b898e3011d7a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 334dc2aad754a428bbb1b44daec11061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 6
@@ -123,9 +123,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7126116201837212018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e92ead85525143d781aa531094104ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d03300670e2e43d9965d4634a15b697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyCards: []
+  HealthPoints: 2
 --- !u!1001 &5686518040678564617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,6 +135,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2116222588061958541}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 76dfe63267ad24204882afde496a403e,
+        type: 3}
+      propertyPath: m_Name
+      value: Monster-DogRev
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 76dfe63267ad24204882afde496a403e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 76dfe63267ad24204882afde496a403e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -202,16 +214,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 76dfe63267ad24204882afde496a403e,
-        type: 3}
-      propertyPath: m_Name
-      value: Monster-DogRev
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 76dfe63267ad24204882afde496a403e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 76dfe63267ad24204882afde496a403e,
         type: 3}

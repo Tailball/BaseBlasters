@@ -59,7 +59,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1725720796838962547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c085eafc0714a3f83b898e3011d7a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 334dc2aad754a428bbb1b44daec11061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 5
@@ -72,7 +72,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1725720796838962547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e7464f40277c4ceebe4019654a13af1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9411dae9e8599472585b62289a3ae923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   HealthPoints: 5

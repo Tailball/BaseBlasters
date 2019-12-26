@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(EnemiesController))]
 [RequireComponent(typeof(TilemapController))]
 public class RoomController : MonoBehaviour

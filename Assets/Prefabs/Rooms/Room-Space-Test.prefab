@@ -44,10 +44,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 773695541833074329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1257c3c7075ad4db1b990299c406bb6b, type: 3}
+  m_Script: {fileID: 11500000, guid: fccb581b859fc4f7b845e2b2f24c3e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyHolder: {fileID: 849525780634570939}
 --- !u!114 &4789875611991595955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,9 +56,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 773695541833074329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e7329d7c7bd429a8775d8498baadbc, type: 3}
+  m_Script: {fileID: 11500000, guid: bfa7ad568d3074bb2bdc90ce75704174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyHolder: {fileID: 849525780634570939}
 --- !u!114 &5733262201042166656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 773695541833074329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17d2ad4717bc94b2c95075eb6d2cd6f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2928109a2133849f69d539d5a05fab81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &849525780634570939
@@ -253,11 +253,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3659302826720657222}
     m_Modifications:
-    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-Floor4Basic
-      objectReference: {fileID: 0}
     - target: {fileID: 1411450231757806033, guid: e146eeae8036e4ef88ff53c4304fd67c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -312,6 +307,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-Floor4Basic
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e146eeae8036e4ef88ff53c4304fd67c, type: 3}
@@ -853,11 +853,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3659302826720657222}
     m_Modifications:
-    - target: {fileID: 5520209447504848999, guid: b9874132b43934e9ab748ff014e2b9cc,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-Wall3Light
-      objectReference: {fileID: 0}
     - target: {fileID: 4071734249038243099, guid: b9874132b43934e9ab748ff014e2b9cc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -912,6 +907,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520209447504848999, guid: b9874132b43934e9ab748ff014e2b9cc,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-Wall3Light
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9874132b43934e9ab748ff014e2b9cc, type: 3}
@@ -1528,11 +1528,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3659302826720657222}
     m_Modifications:
-    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-Floor4Basic (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 1411450231757806033, guid: e146eeae8036e4ef88ff53c4304fd67c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1587,6 +1582,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-Floor4Basic (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e146eeae8036e4ef88ff53c4304fd67c, type: 3}
@@ -2278,11 +2278,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3659302826720657222}
     m_Modifications:
-    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-Floor4Basic (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 1411450231757806033, guid: e146eeae8036e4ef88ff53c4304fd67c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2337,6 +2332,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-Floor4Basic (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e146eeae8036e4ef88ff53c4304fd67c, type: 3}
@@ -2878,11 +2878,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3659302826720657222}
     m_Modifications:
-    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
-        type: 3}
-      propertyPath: m_Name
-      value: Tile-Space-Floor4Basic (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 1411450231757806033, guid: e146eeae8036e4ef88ff53c4304fd67c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2937,6 +2932,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 715081028758074880, guid: e146eeae8036e4ef88ff53c4304fd67c,
+        type: 3}
+      propertyPath: m_Name
+      value: Tile-Space-Floor4Basic (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e146eeae8036e4ef88ff53c4304fd67c, type: 3}

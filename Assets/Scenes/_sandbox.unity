@@ -2047,5 +2047,32 @@ PrefabInstance:
       propertyPath: txtRoundNum
       value: 
       objectReference: {fileID: 1940459474}
+    - target: {fileID: 96642088965080536, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: CameraPerspective
+      value: 
+      objectReference: {fileID: 1687258584}
+    - target: {fileID: 96642088965080536, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: CameraOrthographic
+      value: 
+      objectReference: {fileID: 1444356965}
+    - target: {fileID: 96642088965080536, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: txtRoundNum
+      value: 
+      objectReference: {fileID: 1940459474}
+    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: testEnemy
+      value: 
+      objectReference: {fileID: 2267119422538752120, guid: de3339cc3093546098199c3fbb5907c1,
+        type: 3}
+    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: testRoom
+      value: 
+      objectReference: {fileID: 4803586693221184807, guid: 0c8244b1dc5244ed69a695da9b51a232,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
