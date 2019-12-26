@@ -3,5 +3,6 @@ public enum PlayStates {
     Entering,
     Exploring,
     Combat,
-    Exiting
+    Exiting,
+    GameOver
 }

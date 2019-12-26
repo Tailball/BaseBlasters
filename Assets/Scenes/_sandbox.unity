@@ -413,7 +413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 15.699951}
+  m_AnchoredPosition: {x: 30, y: 15.699707}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &146288505
@@ -721,31 +721,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &828277472 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6247672662965961439, guid: 39133b0fd7f7a4471a3311205410a761,
-    type: 3}
-  m_PrefabInstance: {fileID: 6247672661567898109}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &828277476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828277472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88faaf0fd400345f581e12482deedc81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TxtDeckSize: {fileID: 0}
-  DeckPile: {fileID: 920582484}
-  DiscardPile: {fileID: 719299906}
-  HandPile: {fileID: 645926667}
-  TempPile: {fileID: 1624612157}
-  PlayerDropPoint: {fileID: 1519502052}
-  EnemyDropPoint: {fileID: 1563122998}
 --- !u!1 &881975779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1985,31 +1960,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-      propertyPath: MainUi
-      value: 
-      objectReference: {fileID: 911940971}
-    - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: CameraOrthographic
-      value: 
-      objectReference: {fileID: 1444356965}
-    - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: CameraPerspective
-      value: 
-      objectReference: {fileID: 1687258584}
-    - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: txtRoundNum
-      value: 
-      objectReference: {fileID: 1940459474}
-    - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: RoomHolder
-      value: 
-      objectReference: {fileID: 1908322159}
-    - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
       propertyPath: ExploreUI
       value: 
       objectReference: {fileID: 64866867}
@@ -2020,67 +1970,82 @@ PrefabInstance:
       objectReference: {fileID: 1943014845}
     - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-      propertyPath: DefNPCLayer.m_Bits
-      value: 2048
+      propertyPath: RoomHolder
+      value: 
+      objectReference: {fileID: 1908322159}
+    - target: {fileID: 6247672662965961438, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
+    - target: {fileID: 978344814141058984, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-      propertyPath: cards.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: testRoom
+      propertyPath: DeckPile
       value: 
-      objectReference: {fileID: 5733262201042166656, guid: 0c8244b1dc5244ed69a695da9b51a232,
+      objectReference: {fileID: 920582484}
+    - target: {fileID: 978344814141058984, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: testEnemy
+      propertyPath: DiscardPile
       value: 
-      objectReference: {fileID: 6909213963459809946, guid: de3339cc3093546098199c3fbb5907c1,
+      objectReference: {fileID: 719299906}
+    - target: {fileID: 978344814141058984, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: testCard
+      propertyPath: HandPile
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038,
+      objectReference: {fileID: 645926667}
+    - target: {fileID: 978344814141058984, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: cards.Array.data[0]
+      propertyPath: TempPile
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038,
+      objectReference: {fileID: 1624612157}
+    - target: {fileID: 978344814141058984, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: cards.Array.data[1]
+      propertyPath: PlayerDropPoint
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038,
+      objectReference: {fileID: 1519502052}
+    - target: {fileID: 978344814141058984, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: cards.Array.data[2]
+      propertyPath: EnemyDropPoint
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038,
-        type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: cards.Array.data[3]
+      objectReference: {fileID: 1563122998}
+    - target: {fileID: 828277476, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
+      propertyPath: DeckPile
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 9a928c38294374bc7a5cd4e47638131f,
-        type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: cards.Array.data[4]
+      objectReference: {fileID: 920582484}
+    - target: {fileID: 828277476, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
+      propertyPath: DiscardPile
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 2e00cf2330bcf4476a1b94b15fcef3d2,
-        type: 3}
-    - target: {fileID: 3530899259232592363, guid: 39133b0fd7f7a4471a3311205410a761,
-        type: 3}
-      propertyPath: cards.Array.data[5]
+      objectReference: {fileID: 719299906}
+    - target: {fileID: 828277476, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
+      propertyPath: HandPile
       value: 
-      objectReference: {fileID: 6546711988893853448, guid: 2e00cf2330bcf4476a1b94b15fcef3d2,
+      objectReference: {fileID: 645926667}
+    - target: {fileID: 828277476, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
+      propertyPath: TempPile
+      value: 
+      objectReference: {fileID: 1624612157}
+    - target: {fileID: 828277476, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
+      propertyPath: PlayerDropPoint
+      value: 
+      objectReference: {fileID: 1519502052}
+    - target: {fileID: 828277476, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}
+      propertyPath: EnemyDropPoint
+      value: 
+      objectReference: {fileID: 1563122998}
+    - target: {fileID: 4693986833421357652, guid: 39133b0fd7f7a4471a3311205410a761,
         type: 3}
+      propertyPath: CameraOrthographic
+      value: 
+      objectReference: {fileID: 1444356965}
+    - target: {fileID: 4693986833421357652, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: CameraPerspective
+      value: 
+      objectReference: {fileID: 1687258584}
+    - target: {fileID: 4693986833421357652, guid: 39133b0fd7f7a4471a3311205410a761,
+        type: 3}
+      propertyPath: txtRoundNum
+      value: 
+      objectReference: {fileID: 1940459474}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39133b0fd7f7a4471a3311205410a761, type: 3}

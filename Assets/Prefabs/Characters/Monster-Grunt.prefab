@@ -76,6 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e92ead85525143d781aa531094104ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyCards:
+  - {fileID: 6546711988893853448, guid: 3ed08475ac1cd41da9f3cb5af58d25d0, type: 3}
+  - {fileID: 6546711988893853448, guid: 28e30312b05f744beba39fb6d537f55e, type: 3}
+  HealthPoints: 2
 --- !u!65 &4670397298503324303
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -42,6 +42,10 @@ public class EnemiesController : MonoBehaviour
         var enemy = Instantiate(PoolController.instance.getEnemy(), new Vector3(-2, 0, 1), Quaternion.identity, EnemyHolder.transform);
         var enemyController = enemy.GetComponent<EnemyController>();
         _enemiesInRoom.Add(enemyController);
+
+        var enemy2 = Instantiate(PoolController.instance.getEnemy(), new Vector3(7, 0, 3), Quaternion.identity, EnemyHolder.transform);
+        var enemyController2 = enemy2.GetComponent<EnemyController>();
+        _enemiesInRoom.Add(enemyController2);
     }
 
     public bool haveAllEnemiesMadeAMoveThisTurn() {
@@ -58,5 +62,10 @@ public class EnemiesController : MonoBehaviour
 
     public void setAllEnemiesExploreAction(Vector3 playerPos) {
         this._enemiesInRoom.ForEach(e => e.setExploreAction(playerPos));
+    }
+
+    public void killEnemy(EnemyController enemy) {
+        _enemiesInRoom.Remove(enemy);
+        Destroy(enemy.gameObject);
     }
 }

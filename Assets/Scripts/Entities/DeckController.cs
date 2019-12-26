@@ -164,7 +164,7 @@ public class DeckController : MonoBehaviour
         card.transform.SetParent(PlayerDropPoint, false);
         card.transform.position = PlayerDropPoint.transform.position;
 
-        GameController.instance.playerMadeCardMove();
+        GameController.instance.acceptPlayerMove();
     }
 
     public void moveCardToDiscard(CardController card) {
@@ -172,6 +172,22 @@ public class DeckController : MonoBehaviour
     }
 
     public void moveDropPointToDiscard() {
-        playerDrop.transform.SetParent(DiscardPile);
+        var droppedCard = playerDrop;
+
+        if(droppedCard != null)
+            droppedCard.transform.SetParent(DiscardPile);
+    }
+
+    public void setEnemyCardOnDroppoint(CardController card) {
+        var cardInstance = Instantiate(card, EnemyDropPoint.transform.position, Quaternion.identity, EnemyDropPoint);
+    }
+
+    public void moveAllDropPointsToDiscard() {
+        moveDropPointToDiscard();
+
+        var droppedEnemy = enemyDrop;
+
+        if(droppedEnemy != null)
+            Destroy(droppedEnemy.gameObject);
     }
 }

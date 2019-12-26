@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6247672662965961433}
   - component: {fileID: 6247672662965961438}
+  - component: {fileID: 4693986833421357652}
+  - component: {fileID: 96642088965080536}
   - component: {fileID: 3530899259232592363}
+  - component: {fileID: 978344814141058984}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -44,10 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3cc4521a346d406b84bd515118c9a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainUi: {fileID: 0}
-  CameraOrthographic: {fileID: 0}
-  CameraPerspective: {fileID: 0}
-  txtRoundNum: {fileID: 0}
+  ExploreUI: {fileID: 0}
+  CombatUI: {fileID: 0}
+  RoomHolder: {fileID: 0}
   SelectedPlayer: {fileID: 1725720796838962547, guid: 73e26906168a3431b839efb92379088a,
     type: 3}
   EnterSpeed: 3.25
@@ -57,6 +59,36 @@ MonoBehaviour:
   DefWallLayer:
     serializedVersion: 2
     m_Bits: 1024
+  DefNPCLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!114 &4693986833421357652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247672662965961439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a9e43af40764393a4ec3171424fe83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraOrthographic: {fileID: 0}
+  CameraPerspective: {fileID: 0}
+  txtRoundNum: {fileID: 0}
+--- !u!114 &96642088965080536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247672662965961439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03e66b720e98435881e4d70e9bb1d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3530899259232592363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,5 +101,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd1ae756efd9401e9ef4ee7ada7f046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testEnemy: {fileID: 1276850568409898233, guid: de3339cc3093546098199c3fbb5907c1,
+  testEnemy: {fileID: 6909213963459809946, guid: de3339cc3093546098199c3fbb5907c1,
     type: 3}
+  testRoom: {fileID: 5733262201042166656, guid: 0c8244b1dc5244ed69a695da9b51a232,
+    type: 3}
+  cards:
+  - {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038, type: 3}
+  - {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038, type: 3}
+  - {fileID: 6546711988893853448, guid: 1dd77cc0a095d4496874a7e27489e038, type: 3}
+  - {fileID: 6546711988893853448, guid: 9a928c38294374bc7a5cd4e47638131f, type: 3}
+  - {fileID: 6546711988893853448, guid: 2e00cf2330bcf4476a1b94b15fcef3d2, type: 3}
+  - {fileID: 6546711988893853448, guid: 2e00cf2330bcf4476a1b94b15fcef3d2, type: 3}
+--- !u!114 &978344814141058984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247672662965961439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88faaf0fd400345f581e12482deedc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TxtDeckSize: {fileID: 0}
+  DeckPile: {fileID: 0}
+  DiscardPile: {fileID: 0}
+  HandPile: {fileID: 0}
+  TempPile: {fileID: 0}
+  PlayerDropPoint: {fileID: 0}
+  EnemyDropPoint: {fileID: 0}

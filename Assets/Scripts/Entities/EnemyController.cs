@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(CharacterMover))]
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : MonoBehaviour
 {
     //UNITY LINKS
+    [Header("Links")]
+    [SerializeField] List<CardController> EnemyCards;
+    [SerializeField] int HealthPoints;
 
     
     //MEMBERS (PRIVATE)
@@ -18,6 +22,10 @@ public class EnemyController : MonoBehaviour
     //ACCESSORS - MUTATORS (PUBLIC)
     public CharacterMover movementData {
         get { return _mover; }
+    }
+
+    public int healthPoints {
+        get { return HealthPoints; }
     }
 
 
@@ -72,5 +80,16 @@ public class EnemyController : MonoBehaviour
         }
 
         _mover.setMovementDirection(moveTowards);
+    }
+
+    public void playCard() {
+        //TODO: Add card AI here
+
+        var randomCard = Random.Range(0, EnemyCards.Count);
+        DeckController.instance.setEnemyCardOnDroppoint(EnemyCards[randomCard]);
+    }
+
+    public void damage(int dmg) {
+        HealthPoints -= dmg;
     }
 }

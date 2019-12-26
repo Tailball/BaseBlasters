@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //UNITY LINKS
+    [SerializeField] int HealthPoints;
 
 
     //MEMBERS (PRIVATE)
@@ -16,6 +17,10 @@ public class PlayerController : MonoBehaviour
     //ACCESSORS - MUTATORS (PUBLIC)
     public CharacterMover movementData {
         get { return _mover ;}
+    }
+
+    public int healthPoints {
+        get { return HealthPoints; }
     }
 
 
@@ -39,7 +44,7 @@ public class PlayerController : MonoBehaviour
     void getInput() {  
         if(_mover.isMoving) return;
         if(GameController.instance.playState != PlayStates.Exploring) return;
-        if(GameController.instance.exploreState != ExploreStates.PlayerMoving) return;
+        if(GameController.instance.passedExploreState != ExploreStates.PlayerMoving) return;
 
         var xAxis = Input.GetAxisRaw("Horizontal");
         var yAxis = Input.GetAxisRaw("Vertical");
@@ -57,5 +62,9 @@ public class PlayerController : MonoBehaviour
     //PUBLIC METHODS
     public void setNewRound() {
         _mover.setNewRound();
+    }
+
+    public void damage(int dmg) {
+        HealthPoints -= dmg;
     }
 }

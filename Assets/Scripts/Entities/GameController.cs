@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-
+[RequireComponent(typeof(GameExploreController))]
+[RequireComponent(typeof(GameCombatController))]
+[RequireComponent(typeof(PoolController))]
+[RequireComponent(typeof(DeckController))]
 public class GameController : MonoBehaviour
 {
     //SINGLETON
@@ -14,10 +16,6 @@ public class GameController : MonoBehaviour
     [Header("Linking")]
     [SerializeField] GameObject ExploreUI = null;
     [SerializeField] GameObject CombatUI = null;
-
-    [SerializeField] Camera CameraOrthographic = null;
-    [SerializeField] Camera CameraPerspective = null;
-    [SerializeField] TMP_Text txtRoundNum = null;
     [SerializeField] GameObject RoomHolder = null;
 
     [Header("Instances")]
@@ -35,18 +33,17 @@ public class GameController : MonoBehaviour
     //MEMBERS (PRIVATE)
     GameStates _gameState;
     PlayStates _playState;
-    CombatStates _combatState;
-    ExploreStates _exploreState;
     
+    GameExploreController _exploreController = null;
+    GameCombatController _combatController = null;
+        
     List<RoomController> _roomsOnFloor = new List<RoomController>();
     RoomController _activeRoom;
     PlayerController _activePlayer;
-
-    int _round = 0;
     
 
     //ACCESSORS - MUTATORS (PUBLIC)
-    public GameStates gameStates {
+    public GameStates gameState {
         get { return _gameState; }
     }
 
@@ -54,12 +51,12 @@ public class GameController : MonoBehaviour
         get { return _playState; }
     }
 
-    public CombatStates combatState {
-        get { return _combatState; }
+    public ExploreStates passedExploreState {
+        get { return _exploreController.state; }
     }
 
-    public ExploreStates exploreState {
-        get { return _exploreState; }
+    public CombatStates passedCombatState {
+        get { return _combatController.state; }
     }
 
     public LayerMask floorLayer {
@@ -68,6 +65,18 @@ public class GameController : MonoBehaviour
 
     public LayerMask wallLayer {
         get { return DefWallLayer; }
+    }
+
+    public LayerMask npcLayer {
+        get { return DefNPCLayer; }
+    }
+
+    public PlayerController activePlayer {
+        get { return _activePlayer; }
+    }
+
+    public RoomController activeRoom {
+        get { return _activeRoom; }
     }
 
 
@@ -80,16 +89,14 @@ public class GameController : MonoBehaviour
         else if(instance != this) {
             Destroy(gameObject);
         }
+
+        _exploreController = GetComponent<GameExploreController>();
+        _combatController = GetComponent<GameCombatController>();
     }
 
     void Start() {
-        ExploreUI.SetActive(false);
-        CombatUI.SetActive(false);
-
         this._gameState = GameStates.ContentGeneration; 
-        this._playState = PlayStates.Initializing;
-        this._exploreState = ExploreStates.PlayerMoving;
-        this._combatState = CombatStates.DrawingCards;
+        changePlaystateToInitializing();
     }
 
     void Update() {
@@ -130,15 +137,17 @@ public class GameController : MonoBehaviour
             break;
 
             case PlayStates.Exploring:
-                getExploringInput();
-                execExplore();
+                _exploreController.exec();
             break;
 
             case PlayStates.Combat:
-                execCombat();
+                _combatController.exec();
             break;
 
             case PlayStates.Exiting:
+            break;
+
+            case PlayStates.GameOver:
             break;
         }
     }
@@ -149,14 +158,11 @@ public class GameController : MonoBehaviour
         initializePlayer();
         initializeDeck();
 
-        CameraOrthographic.GetComponent<CameraController>().setTarget(_activePlayer.gameObject);
-        CameraPerspective.GetComponent<CameraController>().setTarget(_activePlayer.gameObject);
-
-        _playState = PlayStates.Entering;
+        _exploreController.setExploringCameraTarget(_activePlayer.gameObject);
+        changePlaystateToEntering();
     }
 
     void initializePool() {
-
     }
 
     void initializeFloor() {
@@ -177,147 +183,58 @@ public class GameController : MonoBehaviour
     }
 
     void execEnter() {
-        CameraPerspective.nearClipPlane -= Time.deltaTime * EnterSpeed;
+        var cam = _exploreController.cameraPerspective;
+        cam.nearClipPlane -= Time.deltaTime * EnterSpeed;
 
-        if(CameraPerspective.nearClipPlane <= 3.8f) {
-            CameraPerspective.nearClipPlane = 3.8f;
-            _playState = PlayStates.Exploring;
+        if(cam.nearClipPlane <= 3.8f) {
+            cam.nearClipPlane = 3.8f;
             
-            setNewRound();
+            _exploreController.setNewExploreRound();
+
             ExploreUI.SetActive(true);
             CombatUI.SetActive(false);
+
+            changePlaystateToExploring();
         }
-    }
-
-    void execExplore() {
-        switch(_exploreState) {
-            case ExploreStates.PlayerMoving:
-                var playerMover = _activePlayer.movementData;
-
-                if(playerMover.hasMadeAMoveThisTurn && !playerMover.isMoving) {
-                    var combat = checkForCombat();
-
-                    if(!combat) {
-                        _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
-                        _exploreState = ExploreStates.EnemyMoving;
-                    }
-                    else {
-                        setNewRound();
-                        _exploreState = ExploreStates.PlayerMoving;
-                        _playState = PlayStates.Combat;
-                    }
-                }
-            break;
-
-            case ExploreStates.EnemyMoving:
-                var allEnemiesMadeAMoveThisTurn = _activeRoom.enemies.haveAllEnemiesMadeAMoveThisTurn();
-                var allEnemiesDoneMoving = _activeRoom.enemies.haveAllEnemiesStoppedMoving();
-
-                if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
-                    setNewRound();
-                    var combat = checkForCombat();
-
-                    if(!combat) {
-                        _exploreState = ExploreStates.PlayerMoving;
-                    }
-                    else {
-                        _activeRoom.enemies.setAllEnemiesExploreAction(_activePlayer.transform.position);
-                        _exploreState = ExploreStates.EnemyMoving;
-                        _playState = PlayStates.Combat;
-                    }
-                }
-            break;
-        }
-    }
-
-    void execCombat() {
-        switch(_combatState) {
-            case CombatStates.DrawingCards:
-                DeckController.instance.drawCardsToHand(2);
-                _combatState = CombatStates.EnemyTurn;
-            break;
-
-            case CombatStates.EnemyTurn:
-                //Put any active cards in discard pile
-                //Select card and play
-                _combatState = CombatStates.PlayerTurn;
-            break;
-
-            case CombatStates.PlayerTurn:
-                //Wait for cards (func playerMadeCardMove())
-                //Will automatically go to resolve
-            break;
-
-            case CombatStates.Resolve:
-                //Apply both cards
-                //Define if anyone died
-                //Go either to EndCombat or EnemyTurn state
-                _combatState = CombatStates.EndCombat;
-            break;
-
-            case CombatStates.EndCombat:
-                DeckController.instance.moveDropPointToDiscard();
-                DeckController.instance.moveHandToDeck();
-
-                var deck = DeckController.instance.amountOfCardsInDeck;
-                var discard = DeckController.instance.amountOfCardsInDiscardPile;
-                var hand = DeckController.instance.amountOfCardsInHand;
-                Debug.Log($"After combat. deck: {deck}, hand: {hand}, discard: {discard}");
-
-                //Apply xp, rewards, animations...
-                _combatState = CombatStates.DrawingCards;
-                _playState = PlayStates.Exploring;
-            break;        
-        }
-    }
-
-    bool checkForCombat() {
-        var colliders = Physics.OverlapSphere(_activePlayer.transform.position, .2f, DefNPCLayer);
-        
-        if(colliders.Length > 0) {
-            var enemy = colliders[0];
-            _playState = PlayStates.Combat;
-
-            ExploreUI.SetActive(false);
-            CombatUI.SetActive(true);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    void setNewRound() {
-        _round++;
-
-        _activePlayer.setNewRound();
-        _activeRoom.setNewRound();
-
-        txtRoundNum.text = _round.ToString();
-    }
-
-    void getExploringInput() {
-        if(_playState == PlayStates.Exploring) {
-            if(Input.GetKeyDown(KeyCode.C)) {
-                switchCamera();
-            }
-        }
-    }
-
-    void switchCamera() {
-        CameraOrthographic.gameObject.SetActive(!CameraOrthographic.gameObject.activeInHierarchy);
-        CameraPerspective.gameObject.SetActive(!CameraPerspective.gameObject.activeInHierarchy);
     }
 
 
     //PUBLIC METHODS
-    public void playerMadeCardMove() {
-        //TODO: 
-        //1. define current monster we're fighting
-        //2. set monsters card before player move
-        //3. define if cards have been placed (this function = actual trigger)
-        //4. move to resolve state
+    public void changePlaystateToInitializing() {
+        _playState = PlayStates.Initializing;
+    }
 
-        _combatState = CombatStates.Resolve;
+    public void changePlaystateToEntering() {
+        _playState = PlayStates.Entering;
+    }
+
+    public void changePlaystateToCombat(EnemyController withEnemy) {
+        _combatController.enabled = false;
+        _exploreController.enabled = true;
+        
+        ExploreUI.SetActive(false);
+        CombatUI.SetActive(true);
+
+        _combatController.setActiveEnemy(withEnemy);
+        _playState = PlayStates.Combat;
+    }
+
+    public void changePlaystateToExploring() {
+        _combatController.enabled = false;
+        _exploreController.enabled = true;
+        
+        ExploreUI.SetActive(true);
+        CombatUI.SetActive(false);
+
+        _playState = PlayStates.Exploring;
+    }
+
+    public void changePlaystateToGameOver() {
+        Debug.Log("GAME OVER");
+        _playState = PlayStates.GameOver;
+    }
+
+    public void acceptPlayerMove() {
+        _combatController.acceptPlayerMove();
     }
 }

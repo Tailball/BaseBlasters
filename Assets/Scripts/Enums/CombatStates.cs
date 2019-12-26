@@ -1,7 +1,11 @@
 public enum CombatStates {
     DrawingCards,
+    NewRound,
     EnemyTurn,
     PlayerTurn,
     Resolve,
-    EndCombat
+    EndCombat,
+
+    ResolveCoroutine,
+    EndCombatCoroutine
 }
