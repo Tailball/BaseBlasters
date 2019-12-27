@@ -13,6 +13,7 @@ public class GameExploreState : MonoBehaviour
 
 
     //MEMBERS (PRIVATE)
+    bool _playerStartedCombat = false;
     ExploreStates _state;
     int _round = 0;
 
@@ -57,40 +58,73 @@ public class GameExploreState : MonoBehaviour
 
         switch(_state) {
             case ExploreStates.PlayerMoving:
-                var playerMover = activePlayer.movementData;
-
-                if(playerMover.hasMadeAMoveThisTurn && !playerMover.isMoving) {
-                    var combat = checkForCombat();
-
-                    if(!combat) {
-                        enemies.setAllEnemiesExploreAction(activePlayer.transform.position);
-                        _state = ExploreStates.EnemyMoving;
-                    }
-                    else {
-                        setNewExploreRound();
-                        _state = ExploreStates.PlayerMoving;
-                    }
-                }
+                execPlayerMoving(activePlayer, enemies);
             break;
 
             case ExploreStates.EnemyMoving:
-                var allEnemiesMadeAMoveThisTurn = enemies.haveAllEnemiesMadeAMoveThisTurn();
-                var allEnemiesDoneMoving = enemies.haveAllEnemiesStoppedMoving();
+                execEnemyMoving(activePlayer, enemies);
+            break;
 
-                if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
-                    setNewExploreRound();
-                    var combat = checkForCombat();
+            case ExploreStates.MoveToCombat:
+                execMoveToCombat(activePlayer, enemies);
+            break;
 
-                    if(!combat) {
-                        _state = ExploreStates.PlayerMoving;
-                    }
-                    else {
-                        enemies.setAllEnemiesExploreAction(activePlayer.transform.position);
-                        _state = ExploreStates.EnemyMoving;
-                    }
-                }
+            case ExploreStates.MoveToCombatCoroutine:
+                //
             break;
         }
+    }
+
+    void execPlayerMoving(PlayerController activePlayer, EnemiesController enemies) {
+        var playerMover = activePlayer.movementData;
+
+        if(playerMover.hasMadeAMoveThisTurn && !playerMover.isMoving) {
+            var combat = checkForCombat();
+
+            if(!combat) {
+                enemies.setAllEnemiesExploreAction(activePlayer.transform.position);
+                _state = ExploreStates.EnemyMoving;
+            }
+            else {
+                setNewExploreRound();
+                _playerStartedCombat = true;
+            }
+        }
+    }
+
+    void execEnemyMoving(PlayerController activePlayer, EnemiesController enemies) {
+        var allEnemiesMadeAMoveThisTurn = enemies.haveAllEnemiesMadeAMoveThisTurn();
+        var allEnemiesDoneMoving = enemies.haveAllEnemiesStoppedMoving();
+
+        if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
+            setNewExploreRound();
+            var combat = checkForCombat();
+
+            if(!combat) {
+                _state = ExploreStates.PlayerMoving;
+            }
+            else {
+                enemies.setAllEnemiesExploreAction(activePlayer.transform.position);
+                _playerStartedCombat = false;
+            }
+        }
+    }
+
+    void execMoveToCombat(PlayerController activePlayer, EnemiesController enemies) {
+        StartCoroutine(execMoveToCombatCoroutine(activePlayer, enemies));
+        _state = ExploreStates.MoveToCombatCoroutine;
+    }
+
+    IEnumerator execMoveToCombatCoroutine(PlayerController activePlayer, EnemiesController enemies) {
+        yield return new WaitForSeconds(2f);
+
+        //If a player started combat and wins, he gets the perk of starting the next round. Same with enemies.
+        if(_playerStartedCombat)
+            _state = ExploreStates.PlayerMoving;
+        else
+            _state = ExploreStates.EnemyMoving;
+
+        GameController.instance.changePlaystateToCombat(_activeEnemy);
     }
 
     bool checkForCombat() {
@@ -100,7 +134,7 @@ public class GameExploreState : MonoBehaviour
         
         if(colliders.Length > 0) {
             _activeEnemy = colliders[0].GetComponent<EnemyController>();
-            gc.changePlaystateToCombat(_activeEnemy);
+            _state = ExploreStates.MoveToCombat;
 
             return true;
         }

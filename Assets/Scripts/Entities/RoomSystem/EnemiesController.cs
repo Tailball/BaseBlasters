@@ -19,17 +19,6 @@ public class EnemiesController : MonoBehaviour
 
 
     //UNITY LIFECYCLE
-    void Awake() {
-    }
-
-    void Start() {
-    }
-
-    void Update() {
-    }
-
-    void FixedUpdate() {
-    }
 
 
     //PRIVATE METHODS

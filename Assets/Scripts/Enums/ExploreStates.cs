@@ -1,4 +1,6 @@
 public enum ExploreStates {
     PlayerMoving,
-    EnemyMoving
+    EnemyMoving,
+    MoveToCombat,
+    MoveToCombatCoroutine,
 }

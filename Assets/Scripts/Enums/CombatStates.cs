@@ -6,6 +6,7 @@ public enum CombatStates {
     Resolve,
     EndCombat,
 
+    EnemyTurnCoroutine,
     ResolveCoroutine,
-    EndCombatCoroutine
+    EndCombatCoroutine,
 }

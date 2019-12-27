@@ -34,28 +34,30 @@ public class GameCombatState : MonoBehaviour
             break;
 
             case CombatStates.NewRound:
-                execCombatNewRound(DeckController.instance);
+                execNewRound();
             break;
 
             case CombatStates.EnemyTurn:
-                _activeEnemy.playCard();
-                _state = CombatStates.PlayerTurn;
+                execEnemyTurn();
+            break;
+
+            case CombatStates.EnemyTurnCoroutine:
             break;
 
             case CombatStates.PlayerTurn:
                 //Wait for cards (func playerMadeCardMove())
-                //Will automatically go to resolve
+                //Will then automatically go to resolve
             break;
 
             case CombatStates.Resolve:
-                execCombatResolve();
+                execResolve();
             break;
 
             case CombatStates.ResolveCoroutine:
             break;
 
             case CombatStates.EndCombat:
-                execCombatEndCombat();
+                execEndCombat();
             break;        
 
             case CombatStates.EndCombatCoroutine:
@@ -63,7 +65,8 @@ public class GameCombatState : MonoBehaviour
         }
     }
 
-    void execCombatNewRound(DeckController dInst) {
+    void execNewRound() {
+        var dInst = DeckController.instance;
         dInst.moveAllDropPointsToDiscard();
 
         if(dInst.amountOfCardsInDeck <= 0 && dInst.amountOfCardsInHand <= 0) {
@@ -75,14 +78,26 @@ public class GameCombatState : MonoBehaviour
         }
     }
 
-    void execCombatResolve() {
+    void execEnemyTurn() {
+        StartCoroutine(runEnemyTurn());
+        _state = CombatStates.EnemyTurnCoroutine;
+    }
+
+    void execResolve() {
         StartCoroutine(runResolveCombat());
         _state = CombatStates.ResolveCoroutine;
     }
 
-    void execCombatEndCombat() {
+    void execEndCombat() {
         StartCoroutine(runEndCombat());
         _state = CombatStates.EndCombatCoroutine;
+    }
+
+    IEnumerator runEnemyTurn() {
+        yield return new WaitForSeconds(.5f);
+
+        _activeEnemy.playCard();
+        _state = CombatStates.PlayerTurn;
     }
 
     IEnumerator runResolveCombat() {
@@ -91,12 +106,14 @@ public class GameCombatState : MonoBehaviour
         var gc = GameController.instance;
         var activePlayer = gc.activePlayer;
         var dInst = DeckController.instance;
-        dInst.playerDrop.Use();
-        dInst.enemyDrop.Use();
+        dInst.playerDrop.use();
+        dInst.enemyDrop.use();
 
-        //TODO: refine
+        //TODO: refine // animate
         _activeEnemy.damage(1);
 
+        yield return new WaitForSeconds(.5f);
+        
         if(activePlayer.healthPoints <= 0) {
             Destroy(activePlayer);
             gc.changePlaystateToGameOver();

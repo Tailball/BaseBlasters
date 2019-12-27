@@ -18,8 +18,6 @@ public class GameEnterState : MonoBehaviour
 
 
     //UNITY LIFECYCLE
-    void Awake() {
-    }
 
 
     //PRIVATE METHODS

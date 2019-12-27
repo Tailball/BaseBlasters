@@ -43,25 +43,18 @@ public class EnemyController : MonoBehaviour
             _timeToIdle -= Time.deltaTime * Random.Range(.1f, 7.5f);
             if(_timeToIdle <= 0) {
                 _anim.SetTrigger("Idle");
-                _timeToIdle = 20f;
+                _timeToIdle = 12.5f;
             }
         }
     }
-
-   void FixedUpdate() {
-   }
 
 
     //PRIVATE METHODS
 
 
     //PUBLIC METHODS
-    public void setNewRound() {
-        _mover.setNewRound();
-    }
-
     public void setExploreAction(Vector3 playerPos) {
-        //TODO:
+        //TODO AI:
         //Check if player is in same room
         //Check if player is in sight
 
@@ -79,14 +72,25 @@ public class EnemyController : MonoBehaviour
             moveTowards = Vector3.forward;
         }
 
-        _mover.setMovementDirection(moveTowards);
+        if(_mover.isValidLocation(transform.position + moveTowards))
+            _mover.setMovementDirection(moveTowards);
+        else {
+            //TODO:
+            //If we don't make it hop, it will block the game, because it will never set 'hasmovedthisturn'.
+            //Perhaps better AI here?
+            _mover.setMovementDirection(Vector3.zero);
+        }
     }
 
     public void playCard() {
-        //TODO: Add card AI here
-
+        //TODO: AI
+        //Add card AI here
         var randomCard = Random.Range(0, EnemyCards.Count);
         DeckController.instance.setEnemyCardOnDroppoint(EnemyCards[randomCard]);
+    }
+
+    public void setNewRound() {
+        _mover.setNewRound();
     }
 
     public void damage(int dmg) {

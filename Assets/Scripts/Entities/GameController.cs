@@ -191,18 +191,10 @@ public class GameController : MonoBehaviour
     }
 
     public void changePlaystateToEntering() {
-        _enterState.enabled = true;
-        _combatState.enabled = false;
-        _exploreState.enabled = false;
-
         _playState = PlayStates.Entering;
     }
 
     public void changePlaystateToCombat(EnemyController withEnemy) {
-        _enterState.enabled = false;
-        _combatState.enabled = false;
-        _exploreState.enabled = true;
-        
         ExploreUI.SetActive(false);
         CombatUI.SetActive(true);
 
@@ -211,10 +203,6 @@ public class GameController : MonoBehaviour
     }
 
     public void changePlaystateToExploring() {
-        _enterState.enabled = false;
-        _combatState.enabled = false;
-        _exploreState.enabled = true;
-        
         ExploreUI.SetActive(true);
         CombatUI.SetActive(false);
 

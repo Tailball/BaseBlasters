@@ -29,14 +29,8 @@ public class PlayerController : MonoBehaviour
         _mover = GetComponent<CharacterMover>();
     }
 
-    void Start() {
-    }
-
     void Update() {
         getInput();
-    }
-
-    void FixedUpdate() {
     }
 
 
@@ -53,8 +47,9 @@ public class PlayerController : MonoBehaviour
             var dir = new Vector3(xAxis, 0, yAxis);
             var desiredLocation = transform.position + dir;
             
-            if(_mover.isValidLocation(desiredLocation))
+            if(_mover.isValidLocation(desiredLocation)) {
                 _mover.setMovementDirection(dir);
+            }
         }
     }
 

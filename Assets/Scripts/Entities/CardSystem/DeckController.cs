@@ -30,33 +30,23 @@ public class DeckController : MonoBehaviour
 
     //ACCESSORS - MUTATORS (PUBLIC)
     public List<CardController> deck {
-        get { 
-            return DeckPile.GetComponentsInChildren<CardController>().ToList();
-        }
+        get { return DeckPile.GetComponentsInChildren<CardController>().ToList(); }
     }
 
     public List<CardController> discard {
-        get { 
-            return DiscardPile.GetComponentsInChildren<CardController>().ToList();
-        }
+        get { return DiscardPile.GetComponentsInChildren<CardController>().ToList();}
     }
 
     public List<CardController> hand {
-        get {
-            return HandPile.GetComponentsInChildren<CardController>().ToList();
-        }
+        get { return HandPile.GetComponentsInChildren<CardController>().ToList(); }
     }
 
     public CardController playerDrop {
-        get {
-            return PlayerDropPoint.GetComponentInChildren<CardController>();
-        }
+        get { return PlayerDropPoint.GetComponentInChildren<CardController>(); }
     }
 
     public CardController enemyDrop {
-        get {
-            return EnemyDropPoint.GetComponentInChildren<CardController>();
-        }
+        get { return EnemyDropPoint.GetComponentInChildren<CardController>(); }
     }
 
     public int amountOfCardsInDeck {
@@ -83,8 +73,14 @@ public class DeckController : MonoBehaviour
         }
     }
 
+    void Update() {
+    }
+
 
     //PRIVATE METHODS
+    void updateDeckSizeUI() {
+
+    }
 
 
     //PUBLIC METHODS
@@ -101,7 +97,7 @@ public class DeckController : MonoBehaviour
             var c = PoolController.instance.getCard().GetComponent<CardController>();
 
             var instance = Instantiate(c, Vector3.zero, Quaternion.identity, DeckPile);
-            instance.SetId(Guid.NewGuid());
+            instance.setId(Guid.NewGuid());
         }
 
         shuffle();
@@ -111,6 +107,7 @@ public class DeckController : MonoBehaviour
         for(var i = 0; i < amount; i++) {
             if(amountOfCardsInDeck > 0) {
                 var card = this.deck.First();
+                card.reset();
                 card.transform.SetParent(HandPile);
             }
         }
@@ -140,12 +137,14 @@ public class DeckController : MonoBehaviour
 
     public void moveHandToDiscardPile() {
         hand.ForEach(c => {
+            c.reset();
             c.transform.SetParent(DiscardPile);
         });
     }
 
     public void moveHandToDeck() {
         hand.ForEach(c => {
+            c.reset();
             c.transform.SetParent(DeckPile);
         });
 
@@ -180,6 +179,7 @@ public class DeckController : MonoBehaviour
 
     public void setEnemyCardOnDroppoint(CardController card) {
         var cardInstance = Instantiate(card, EnemyDropPoint.transform.position, Quaternion.identity, EnemyDropPoint);
+        cardInstance.setIsInDropzone(true);
     }
 
     public void moveAllDropPointsToDiscard() {

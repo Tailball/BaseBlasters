@@ -46,9 +46,6 @@ public class CharacterMover : MonoBehaviour
         _isMoving = false;
     }
 
-    void Update() {
-    }
-
     void FixedUpdate() {
         move();
         rotate();
