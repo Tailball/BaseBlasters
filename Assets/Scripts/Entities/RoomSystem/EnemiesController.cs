@@ -32,7 +32,7 @@ public class EnemiesController : MonoBehaviour
         var enemyController = enemy.GetComponent<EnemyController>();
         _enemiesInRoom.Add(enemyController);
 
-        var enemy2 = Instantiate(PoolController.instance.getEnemy(), new Vector3(7, 0, 3), Quaternion.identity, EnemyHolder.transform);
+        var enemy2 = Instantiate(PoolController.instance.getEnemy(), new Vector3(9, 0, 1), Quaternion.identity, EnemyHolder.transform);
         var enemyController2 = enemy2.GetComponent<EnemyController>();
         _enemiesInRoom.Add(enemyController2);
     }

@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameCombatState : MonoBehaviour
 {
     //UNITY LINKS
-    CombatStates _state;
+    [SerializeField] GameObject HandArea;
 
 
     //MEMBERS (PRIVATE)
+    CombatStates _state;
     EnemyController _activeEnemy;
+    bool handEnabled = false;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -22,6 +25,20 @@ public class GameCombatState : MonoBehaviour
     //UNITY LIFECYCLE
     void Awake() {
         _state = CombatStates.DrawingCards;
+    }
+
+    void Start() {
+        return;
+        HandArea.transform.position = new Vector3(HandArea.transform.position.x, 0f, HandArea.transform.position.z);
+    }
+
+    void Update() {
+        return;
+        var handLocation = new Vector3(HandArea.transform.position.x, handEnabled ? 50f : 0f, HandArea.transform.position.z);
+
+        if(Mathf.Abs(HandArea.transform.position.y - handLocation.y) > Mathf.Epsilon) {
+            HandArea.transform.position = Vector3.MoveTowards(HandArea.transform.position, handLocation, Time.deltaTime * 265f);
+        }
     }
 
 
@@ -83,25 +100,25 @@ public class GameCombatState : MonoBehaviour
         _state = CombatStates.EnemyTurnCoroutine;
     }
 
+    IEnumerator runEnemyTurn() {
+        yield return new WaitForSeconds(.5f);
+
+        _activeEnemy.playCard();
+        handEnabled = true;
+
+        yield return new WaitForSeconds(.65f);
+        
+        _state = CombatStates.PlayerTurn;
+    }
+
     void execResolve() {
         StartCoroutine(runResolveCombat());
         _state = CombatStates.ResolveCoroutine;
     }
 
-    void execEndCombat() {
-        StartCoroutine(runEndCombat());
-        _state = CombatStates.EndCombatCoroutine;
-    }
-
-    IEnumerator runEnemyTurn() {
-        yield return new WaitForSeconds(.5f);
-
-        _activeEnemy.playCard();
-        _state = CombatStates.PlayerTurn;
-    }
-
     IEnumerator runResolveCombat() {
-        yield return new WaitForSeconds(.5f);
+        handEnabled = false;
+        yield return new WaitForSeconds(.65f);
 
         var gc = GameController.instance;
         var activePlayer = gc.activePlayer;
@@ -119,12 +136,16 @@ public class GameCombatState : MonoBehaviour
             gc.changePlaystateToGameOver();
         }
         else if(_activeEnemy.healthPoints <= 0) {
-            gc.activeRoom.enemies.killEnemy(_activeEnemy);
             _state = CombatStates.EndCombat;
         }
         else {
             _state = CombatStates.NewRound;
         }
+    }
+
+    void execEndCombat() {
+        StartCoroutine(runEndCombat());
+        _state = CombatStates.EndCombatCoroutine;
     }
 
     IEnumerator runEndCombat() {
@@ -134,12 +155,15 @@ public class GameCombatState : MonoBehaviour
         dInst.moveAllDropPointsToDiscard();
         dInst.moveHandToDeck();
 
-        yield return new WaitForSeconds(.5f);
+        var gc = GameController.instance;
+        var activePlayer = gc.activePlayer;
+        activePlayer.movementData.jumpBack(true);
+        gc.activeRoom.enemies.killEnemy(_activeEnemy);
+
+        yield return new WaitForSeconds(.3f);
 
         _state = CombatStates.DrawingCards;
         GameController.instance.changePlaystateToExploring();
-
-        //Apply xp, rewards, animations...
     }
 
 

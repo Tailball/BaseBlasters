@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 [RequireComponent(typeof(CharacterMover))]
@@ -11,6 +12,7 @@ public class EnemyController : MonoBehaviour
     [Header("Links")]
     [SerializeField] List<CardController> EnemyCards = new List<CardController>();
     [SerializeField] int HealthPoints;
+    [SerializeField] Canvas InternalCanvas = null;
 
     
     //MEMBERS (PRIVATE)
@@ -35,9 +37,6 @@ public class EnemyController : MonoBehaviour
        _mover = GetComponent<CharacterMover>();
    }
 
-   void Start() {
-   }
-
    void Update() {
         if(!_mover.isMoving) {
             _timeToIdle -= Time.deltaTime * Random.Range(.1f, 7.5f);
@@ -46,10 +45,18 @@ public class EnemyController : MonoBehaviour
                 _timeToIdle = 12.5f;
             }
         }
+
+        if(InternalCanvas.isActiveAndEnabled) {
+            InternalCanvas.transform.LookAt(Camera.main.transform);
+        }
     }
 
 
     //PRIVATE METHODS
+    IEnumerator setMovementCoroutine(Vector3 direction) {
+        yield return new WaitForSeconds(.35f);
+        _mover.setMovementDirection(direction);
+    }
 
 
     //PUBLIC METHODS
@@ -72,14 +79,14 @@ public class EnemyController : MonoBehaviour
             moveTowards = Vector3.forward;
         }
 
-        if(_mover.isValidLocation(transform.position + moveTowards))
-            _mover.setMovementDirection(moveTowards);
-        else {
+        if(!_mover.isValidLocation(transform.position + moveTowards)) {
             //TODO:
             //If we don't make it hop, it will block the game, because it will never set 'hasmovedthisturn'.
             //Perhaps better AI here?
-            _mover.setMovementDirection(Vector3.zero);
+            moveTowards = Vector3.zero;
         }
+
+        StartCoroutine(setMovementCoroutine(moveTowards));
     }
 
     public void playCard() {
@@ -95,5 +102,10 @@ public class EnemyController : MonoBehaviour
 
     public void damage(int dmg) {
         HealthPoints -= dmg;
+    }
+
+    public void setAlert() {
+        InternalCanvas.gameObject.SetActive(true);
+        InternalCanvas.worldCamera = Camera.main;
     }
 }

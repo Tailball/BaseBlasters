@@ -19,6 +19,8 @@ public class CharacterMover : MonoBehaviour
     bool _madeAMoveThisTurn;
     bool _isMoving;
 
+    Vector3 _combatDestination;
+    bool _isInCombat;
 
     //ACCESSORS - MUTATORS (PUBLIC)
     public Vector3 position {
@@ -44,25 +46,41 @@ public class CharacterMover : MonoBehaviour
         _destination = transform.position;
         _madeAMoveThisTurn = false;
         _isMoving = false;
+        _isInCombat = false;
     }
 
     void FixedUpdate() {
-        move();
-        rotate();
+        var gc = GameController.instance;
+
+        //During exploring phase
+        if(gc.passedExploreState == ExploreStates.PlayerMoving || gc.passedExploreState == ExploreStates.EnemyMoving) {
+            move(_destination);
+            rotate();
+        }
+
+        //Preparing for combat phase
+        else if(_isInCombat && gc.passedExploreState == ExploreStates.MoveToCombatCoroutine) {
+            move(_combatDestination);
+        }
+
+        //Ending combat phase
+        else if(_isInCombat && gc.passedCombatState == CombatStates.EndCombatCoroutine) {
+            move(_combatDestination);
+        }
     }
 
 
     //PRIVATE METHODS
-    void move() {
+    void move(Vector3 destination) {
         if(!_isMoving) return;
 
-        var intermediatePosition = Vector3.MoveTowards(transform.position, _destination, Time.fixedDeltaTime * this.MovementSpeed);
+        var intermediatePosition = Vector3.MoveTowards(transform.position, destination, Time.fixedDeltaTime * this.MovementSpeed);
         _rb.MovePosition(intermediatePosition);
 
-        var diffX = Mathf.Abs(transform.position.x - _destination.x);
-        var diffY = Mathf.Abs(transform.position.z - _destination.z);
+        var diffX = Mathf.Abs(transform.position.x - destination.x);
+        var diffY = Mathf.Abs(transform.position.z - destination.z);
         if(diffX <= 0.01f && diffY <= 0.01f) {
-            _rb.MovePosition(_destination);
+            _rb.MovePosition(destination);
             _isMoving = false;
         }
     }
@@ -73,7 +91,7 @@ public class CharacterMover : MonoBehaviour
         _rb.MoveRotation(Quaternion.Euler(0, _rotDestinationY, 0));
     }
 
-
+    
     //PUBLIC METHODS
     public void setMovementDirection(Vector3 action) {
         var currRotationAngle = transform.rotation.eulerAngles.y;
@@ -104,5 +122,14 @@ public class CharacterMover : MonoBehaviour
         if(floorUnits.Length > 0 && wallUnits.Length <= 0) return true;
 
         return false;
+    }
+
+    public void jumpBack(bool toOriginalPosition) {
+        //using forward, since inner models are a bit twisted (thanks blender)
+        _combatDestination = transform.position - (transform.forward * (toOriginalPosition ? -1 : 1));
+        
+        _isMoving = true;
+        _isInCombat = true;
+        _anim.SetTrigger("Move");
     }
 }

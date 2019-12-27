@@ -57,6 +57,11 @@ public class GameExploreState : MonoBehaviour
         var enemies = gc.activeRoom.enemies;
 
         switch(_state) {
+            case ExploreStates.MoveFromCombat: 
+                //first frame after combat, we want to clean up stuff before they make a move
+                execMoveFromCombat(activePlayer, enemies);
+            break;
+
             case ExploreStates.PlayerMoving:
                 execPlayerMoving(activePlayer, enemies);
             break;
@@ -75,6 +80,17 @@ public class GameExploreState : MonoBehaviour
         }
     }
 
+    void execMoveFromCombat(PlayerController activePlayer, EnemiesController enemies) {
+        if(_playerStartedCombat) {
+            setNewExploreRound();
+            _state = ExploreStates.PlayerMoving;
+        }
+        else {
+            enemies.setAllEnemiesExploreAction(activePlayer.transform.position);
+            _state = ExploreStates.EnemyMoving;
+        }
+    }
+
     void execPlayerMoving(PlayerController activePlayer, EnemiesController enemies) {
         var playerMover = activePlayer.movementData;
 
@@ -86,7 +102,6 @@ public class GameExploreState : MonoBehaviour
                 _state = ExploreStates.EnemyMoving;
             }
             else {
-                setNewExploreRound();
                 _playerStartedCombat = true;
             }
         }
@@ -95,7 +110,7 @@ public class GameExploreState : MonoBehaviour
     void execEnemyMoving(PlayerController activePlayer, EnemiesController enemies) {
         var allEnemiesMadeAMoveThisTurn = enemies.haveAllEnemiesMadeAMoveThisTurn();
         var allEnemiesDoneMoving = enemies.haveAllEnemiesStoppedMoving();
-
+        
         if(allEnemiesMadeAMoveThisTurn && allEnemiesDoneMoving) {
             setNewExploreRound();
             var combat = checkForCombat();
@@ -104,7 +119,6 @@ public class GameExploreState : MonoBehaviour
                 _state = ExploreStates.PlayerMoving;
             }
             else {
-                enemies.setAllEnemiesExploreAction(activePlayer.transform.position);
                 _playerStartedCombat = false;
             }
         }
@@ -116,14 +130,25 @@ public class GameExploreState : MonoBehaviour
     }
 
     IEnumerator execMoveToCombatCoroutine(PlayerController activePlayer, EnemiesController enemies) {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(.5f);
 
-        //If a player started combat and wins, he gets the perk of starting the next round. Same with enemies.
-        if(_playerStartedCombat)
-            _state = ExploreStates.PlayerMoving;
-        else
-            _state = ExploreStates.EnemyMoving;
+        _activeEnemy.setAlert();
 
+        yield return new WaitForSeconds(.75f);
+
+        activePlayer.movementData.jumpBack(false);
+        _activeEnemy.movementData.jumpBack(false);
+
+        yield return new WaitForSeconds(1f);
+
+        // If a player started combat and wins, he gets the perk of starting the next round. Same with enemies.
+        // Because we need to clean up and set new directions for the enemies at the end of combat (not right now)
+        // we need to have an intermediary state. 
+        // Since we then directly move to combat states, it will only be triggered when we go back into exploring state
+        // Movement can happen during combat (jumpback()) and therefore, we need to wait before giving an enemy a new direction
+        // until the end of combat (or the first frame of exploring -> the movefromcombat state)
+        _state = ExploreStates.MoveFromCombat;
+        
         GameController.instance.changePlaystateToCombat(_activeEnemy);
     }
 
