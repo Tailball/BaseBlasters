@@ -79,7 +79,7 @@ public class DeckController : MonoBehaviour
 
     //PRIVATE METHODS
     void updateDeckSizeUI() {
-
+        TxtDeckSize.text = amountOfCardsInDeck.ToString();
     }
 
 
@@ -101,6 +101,7 @@ public class DeckController : MonoBehaviour
         }
 
         shuffle();
+        updateDeckSizeUI();
     }
 
     public void drawCardsToHand(int amount) {
@@ -111,11 +112,15 @@ public class DeckController : MonoBehaviour
                 card.transform.SetParent(HandPile);
             }
         }
+
+        updateDeckSizeUI();
     }
 
     public void addCardToDeck(CardController card) {
         card.transform.SetParent(DeckPile);
+        
         shuffle();
+        updateDeckSizeUI();
     }
 
     public void addCardsToDeck(List<CardController> cards) {
@@ -124,6 +129,7 @@ public class DeckController : MonoBehaviour
         });
 
         shuffle();
+        updateDeckSizeUI();
     }
 
     public void moveCardsFromDeckToDiscardPile(int amount) {
@@ -133,6 +139,8 @@ public class DeckController : MonoBehaviour
                 card.transform.SetParent(DiscardPile);
             }
         }
+
+        updateDeckSizeUI();
     }
 
     public void moveHandToDiscardPile() {
@@ -149,6 +157,7 @@ public class DeckController : MonoBehaviour
         });
 
         shuffle();
+        updateDeckSizeUI();
     }
 
     public void moveDiscardPileToDeck() {
@@ -157,6 +166,7 @@ public class DeckController : MonoBehaviour
         });
 
         shuffle();
+        updateDeckSizeUI();
     }
 
     public void moveCardToDropPoint(CardController card) {
