@@ -12,7 +12,7 @@ public class PoolController : MonoBehaviour
 
 
     //UNITY LINKS
-    public EnemyController testEnemy = null;
+    public List<EnemyController> enemies = new List<EnemyController>();
     public RoomController testRoom = null;
     public List<CardController> cards = new List<CardController>();
 
@@ -36,15 +36,6 @@ public class PoolController : MonoBehaviour
         }
     }
 
-    void Start() {
-    }
-
-    void Update() {
-    }
-
-    void FixedUpdate() {
-    }
-
 
     //PRIVATE METHODS
     private void setupInternals() {
@@ -53,7 +44,8 @@ public class PoolController : MonoBehaviour
 
     //PUBLIC METHODS
     public EnemyController getEnemy() {
-        return testEnemy;
+        var randEnemy = Random.Range(0, enemies.Count);
+        return enemies[randEnemy];
     }
 
     public RoomController getRoom() {

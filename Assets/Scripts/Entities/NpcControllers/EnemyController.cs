@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 
+[RequireComponent(typeof(CombatResolver))]
 [RequireComponent(typeof(CharacterMover))]
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : MonoBehaviour
@@ -11,13 +11,14 @@ public class EnemyController : MonoBehaviour
     //UNITY LINKS
     [Header("Links")]
     [SerializeField] List<CardController> EnemyCards = new List<CardController>();
-    [SerializeField] int HealthPoints;
     [SerializeField] Canvas InternalCanvas = null;
 
     
     //MEMBERS (PRIVATE)
     Animator _anim = null;
     CharacterMover _mover = null;
+    CombatResolver _resolver = null;
+
     float _timeToIdle = 10f;
 
 
@@ -26,8 +27,8 @@ public class EnemyController : MonoBehaviour
         get { return _mover; }
     }
 
-    public int healthPoints {
-        get { return HealthPoints; }
+    public CombatResolver combatData {
+        get { return _resolver; }
     }
 
 
@@ -35,6 +36,7 @@ public class EnemyController : MonoBehaviour
    void Awake() {
        _anim = GetComponentInChildren<Animator>();
        _mover = GetComponent<CharacterMover>();
+       _resolver = GetComponent<CombatResolver>();
    }
 
    void Update() {
@@ -98,10 +100,6 @@ public class EnemyController : MonoBehaviour
 
     public void setNewRound() {
         _mover.setNewRound();
-    }
-
-    public void damage(int dmg) {
-        HealthPoints -= dmg;
     }
 
     public void setAlert() {

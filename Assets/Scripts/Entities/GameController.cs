@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 
 [RequireComponent(typeof(GameExploreState))]
@@ -16,10 +18,21 @@ public class GameController : MonoBehaviour
 
     //UNITY LINKS
     [Header("Linking")]
+    [SerializeField] GameObject GeneralUI = null;
     [SerializeField] GameObject ExploreUI = null;
     [SerializeField] GameObject CombatUI = null;
     [SerializeField] GameObject RoomHolder = null;
-
+    
+    [Header("HealthUI")]
+    [SerializeField] Slider playerHealthSlider = null;
+    [SerializeField] TMP_Text playerHealthText = null;
+    [SerializeField] TMP_Text playerDefenseText = null;
+    [SerializeField] Image playerPortrait = null;
+    [SerializeField] Slider enemyHealthSlider = null;
+    [SerializeField] TMP_Text enemyHealthText = null;
+    [SerializeField] TMP_Text enemyDefenseText = null;
+    [SerializeField] Image enemyPortrait = null;
+    
     [Header("Instances")]
     [SerializeField] GameObject SelectedPlayer = null; //This should change to character select that will pass on the selected playercontroller;
 
@@ -178,10 +191,11 @@ public class GameController : MonoBehaviour
     void initializePlayer() {
         var player = Instantiate(SelectedPlayer, Vector3.zero, Quaternion.Euler(0, 180, 0));
         _activePlayer = player.GetComponent<PlayerController>();
+        playerPortrait.sprite = _activePlayer.combatData.portrait;
     }
 
     void initializeDeck() {
-        DeckController.instance.setStartSizeAndFillPool(6);
+        DeckController.instance.setStartSizeAndFillPool(12);
     }
 
 
@@ -195,16 +209,20 @@ public class GameController : MonoBehaviour
     }
 
     public void changePlaystateToCombat(EnemyController withEnemy) {
+        GeneralUI.SetActive(true);
         ExploreUI.SetActive(false);
         CombatUI.SetActive(true);
+        enemyHealthSlider.gameObject.SetActive(false);
 
         _combatState.setActiveEnemy(withEnemy);
         _playState = PlayStates.Combat;
     }
 
     public void changePlaystateToExploring() {
+        GeneralUI.SetActive(true);
         ExploreUI.SetActive(true);
         CombatUI.SetActive(false);
+        enemyHealthSlider.gameObject.SetActive(false);
 
         _exploreState.setNewExploreRound();
 
@@ -218,5 +236,18 @@ public class GameController : MonoBehaviour
 
     public void acceptPlayerMove() {
         _combatState.acceptPlayerMove();
+    }
+
+    public void setStatsUI(PlayerController player, EnemyController enemy) {
+        enemyHealthSlider.gameObject.SetActive(true);
+        enemyPortrait.sprite = enemy.combatData.portrait;
+
+        playerHealthSlider.value = player.combatData.healthPercentage;
+        playerHealthText.text = player.combatData.healthText;
+        playerDefenseText.text = 0.ToString();
+
+        enemyHealthSlider.value = enemy.combatData.healthPercentage;
+        enemyHealthText.text = enemy.combatData.healthText;
+        enemyDefenseText.text = 0.ToString();
     }
 }

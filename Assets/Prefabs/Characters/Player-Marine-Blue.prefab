@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 153369969}
   - component: {fileID: 2174299029510070282}
   - component: {fileID: 1860166384333522235}
+  - component: {fileID: 4069587587612405832}
   m_Layer: 11
   m_Name: Player-Marine-Blue
   m_TagString: player
@@ -75,7 +76,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9411dae9e8599472585b62289a3ae923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoints: 5
+--- !u!114 &4069587587612405832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725720796838962547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c774aa9fb9b6e44488e87046b598e239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiportrait: {fileID: 21300000, guid: 2ff883e0270f54644ba4373a37a266e8, type: 3}
+  maxHp: 5
 --- !u!1 &8479962984365945872
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,13 +225,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: c1a5c9c2310a742029eeb2d726f494d7,
         type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 1
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: c1a5c9c2310a742029eeb2d726f494d7,
         type: 3}
-      propertyPath: m_Layer
-      value: 11
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: c1a5c9c2310a742029eeb2d726f494d7,
         type: 3}

@@ -14,7 +14,7 @@ public class DeckController : MonoBehaviour
 
     //UNITY LINKS
     [Header("Links")]
-    [SerializeField] TMP_Text TxtDeckSize;
+    [SerializeField] TMP_Text TxtDeckSize = null;
 
     [SerializeField] Transform DeckPile = null;
     [SerializeField] Transform DiscardPile = null;

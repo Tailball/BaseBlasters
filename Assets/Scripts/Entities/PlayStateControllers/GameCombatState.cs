@@ -7,13 +7,11 @@ using UnityEngine.UI;
 public class GameCombatState : MonoBehaviour
 {
     //UNITY LINKS
-    [SerializeField] GameObject HandArea;
 
 
     //MEMBERS (PRIVATE)
     CombatStates _state;
     EnemyController _activeEnemy;
-    bool handEnabled = false;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -27,26 +25,13 @@ public class GameCombatState : MonoBehaviour
         _state = CombatStates.DrawingCards;
     }
 
-    void Start() {
-        return;
-        HandArea.transform.position = new Vector3(HandArea.transform.position.x, 0f, HandArea.transform.position.z);
-    }
-
-    void Update() {
-        return;
-        var handLocation = new Vector3(HandArea.transform.position.x, handEnabled ? 50f : 0f, HandArea.transform.position.z);
-
-        if(Mathf.Abs(HandArea.transform.position.y - handLocation.y) > Mathf.Epsilon) {
-            HandArea.transform.position = Vector3.MoveTowards(HandArea.transform.position, handLocation, Time.deltaTime * 265f);
-        }
-    }
-
 
     //PRIVATE METHODS
     void execCombat() {
         switch(_state) {
             case CombatStates.DrawingCards:
                 DeckController.instance.drawCardsToHand(3);
+                GameController.instance.setStatsUI(GameController.instance.activePlayer, _activeEnemy);
                 _state = CombatStates.EnemyTurn;
             break;
 
@@ -87,6 +72,7 @@ public class GameCombatState : MonoBehaviour
         dInst.moveAllDropPointsToDiscard();
 
         if(dInst.amountOfCardsInDeck <= 0 && dInst.amountOfCardsInHand <= 0) {
+            Debug.Log("New Round -> Game Over");
             GameController.instance.changePlaystateToGameOver();
         }
         else {
@@ -104,7 +90,6 @@ public class GameCombatState : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         _activeEnemy.playCard();
-        handEnabled = true;
 
         yield return new WaitForSeconds(.65f);
         
@@ -117,25 +102,27 @@ public class GameCombatState : MonoBehaviour
     }
 
     IEnumerator runResolveCombat() {
-        handEnabled = false;
         yield return new WaitForSeconds(.65f);
 
         var gc = GameController.instance;
         var activePlayer = gc.activePlayer;
         var dInst = DeckController.instance;
-        dInst.playerDrop.use();
-        dInst.enemyDrop.use();
 
-        //TODO: refine // animate
-        _activeEnemy.damage(1);
+        dInst.playerDrop.use(activePlayer, _activeEnemy);
+        dInst.enemyDrop.use(activePlayer, _activeEnemy);
+        
+        var playerHp = activePlayer.combatData.resolveAndReportHP(activePlayer.name);
+        var enemyHp = _activeEnemy.combatData.resolveAndReportHP(_activeEnemy.name);
+
+        GameController.instance.setStatsUI(activePlayer, _activeEnemy);
 
         yield return new WaitForSeconds(.5f);
         
-        if(activePlayer.healthPoints <= 0) {
+        if(playerHp <= 0) {
             Destroy(activePlayer);
             gc.changePlaystateToGameOver();
         }
-        else if(_activeEnemy.healthPoints <= 0) {
+        else if(enemyHp <= 0) {
             _state = CombatStates.EndCombat;
         }
         else {

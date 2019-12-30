@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(CombatResolver))]
 [RequireComponent(typeof(CharacterMover))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     //UNITY LINKS
-    [SerializeField] int HealthPoints;
 
 
     //MEMBERS (PRIVATE)
     CharacterMover _mover = null;
+    CombatResolver _resolver = null;
 
 
     //ACCESSORS - MUTATORS (PUBLIC)
@@ -19,14 +21,15 @@ public class PlayerController : MonoBehaviour
         get { return _mover ;}
     }
 
-    public int healthPoints {
-        get { return HealthPoints; }
+    public CombatResolver combatData {
+        get { return _resolver; }
     }
 
 
     //UNITY LIFECYCLE
     void Awake() {
         _mover = GetComponent<CharacterMover>();
+        _resolver = GetComponent<CombatResolver>();
     }
 
     void Update() {
@@ -57,9 +60,5 @@ public class PlayerController : MonoBehaviour
     //PUBLIC METHODS
     public void setNewRound() {
         _mover.setNewRound();
-    }
-
-    public void damage(int dmg) {
-        HealthPoints -= dmg;
     }
 }

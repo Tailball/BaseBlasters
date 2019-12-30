@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 2601865856006832453}
   - component: {fileID: 2267119422538752120}
   - component: {fileID: 6909213963459809946}
+  - component: {fileID: 3681431251441913881}
   - component: {fileID: 7649910385500276915}
   - component: {fileID: 4670397298503324303}
   m_Layer: 11
@@ -150,7 +151,6 @@ MonoBehaviour:
   EnemyCards:
   - {fileID: 6546711988893853448, guid: 3ed08475ac1cd41da9f3cb5af58d25d0, type: 3}
   - {fileID: 6546711988893853448, guid: 28e30312b05f744beba39fb6d537f55e, type: 3}
-  HealthPoints: 2
   InternalCanvas: {fileID: 1847274796101059042}
 --- !u!114 &6909213963459809946
 MonoBehaviour:
@@ -165,6 +165,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 6
+--- !u!114 &3681431251441913881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276850568409898233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c774aa9fb9b6e44488e87046b598e239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiportrait: {fileID: 21300000, guid: e6f743d7f719447059cfe5cead899f10, type: 3}
+  maxHp: 2
 --- !u!54 &7649910385500276915
 Rigidbody:
   m_ObjectHideFlags: 0

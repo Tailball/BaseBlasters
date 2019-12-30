@@ -408,6 +408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IdentifyingName: IDLE
   CardType: 2
+  Description: {fileID: 6931808026792218182}
 --- !u!1 &6546711989592483688
 GameObject:
   m_ObjectHideFlags: 0

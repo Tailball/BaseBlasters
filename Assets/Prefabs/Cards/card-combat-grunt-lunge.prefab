@@ -328,6 +328,7 @@ GameObject:
   - component: {fileID: 6546711988893853450}
   - component: {fileID: 6546711988893853451}
   - component: {fileID: 6546711988893853448}
+  - component: {fileID: 7886965756700511333}
   m_Layer: 5
   m_Name: card-combat-grunt-lunge
   m_TagString: Untagged
@@ -408,6 +409,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IdentifyingName: LUNGE1
   CardType: 2
+  Description: {fileID: 6931808026792218182}
+--- !u!114 &7886965756700511333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546711988893853454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590113b57a26c415b994d208421b0a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &6546711989592483688
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 
 public class CardController : MonoBehaviour, 
@@ -14,10 +16,12 @@ public class CardController : MonoBehaviour,
     [Header("Links")]
     [SerializeField] string IdentifyingName = String.Empty;
     [SerializeField] CardTypes CardType = CardTypes.Combat;
-    
+    [SerializeField] TMP_Text Description = null;
+
 
     //MEMBERS (PRIVATE)
     private Canvas _canvas;
+    private List<ICardEffect> _effects = new List<ICardEffect>();
 
     private Guid _id;
     private bool _isInDropzone = false;
@@ -37,6 +41,14 @@ public class CardController : MonoBehaviour,
 
 
     //UNITY LIFECYCLE
+    void Awake() {
+        getCardEffects();
+    }
+
+    void Start() {
+        setDescription();
+    }
+
     void Update() {
         if(!shouldRespondToEvents()) return;
 
@@ -66,6 +78,26 @@ public class CardController : MonoBehaviour,
 
 
     //PRIVATE METHODS
+    void getCardEffects() {
+        var cardfx = GetComponents<ICardEffect>();
+        
+        for(var i = 0; i < cardfx.Length; i++) {
+            _effects.Add(cardfx[i]);
+        }
+    }
+
+    void setDescription() {
+        if(_effects.Count <= 0) return;
+        
+        var sb = string.Empty;
+        
+        _effects.OrderBy(fx => fx.executionOrder)
+                .ToList()
+                .ForEach(fx => sb += fx.statusText + "\n");
+
+        Description.text = sb;
+    }
+
     private bool shouldRespondToEvents() {
         if(CardType == CardTypes.Enemy) return false;
         if(_isInDropzone) return false;
@@ -77,10 +109,6 @@ public class CardController : MonoBehaviour,
 
 
     //PUBLIC METHODS
-    public void use() {
-        //If card does anything special, we should call it here
-    }
-
     public void setId(Guid id) {
         _id = id;
     }
@@ -93,5 +121,11 @@ public class CardController : MonoBehaviour,
         _isInDropzone = false;
         _growDestination = Vector3.one;
         transform.localScale = Vector3.one;
+    }
+
+    public void use(PlayerController player, EnemyController enemy) {
+        _effects.OrderBy(fx => fx.executionOrder)
+                .ToList()
+                .ForEach(fx => fx.execEffect(player, enemy, CardType));
     }
 }
